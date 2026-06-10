@@ -1,0 +1,56 @@
+{
+  "name": "bible-wordle",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "homepage": "https://jerdonphilip.github.io/bible-wordle",
+  "description": "A Wordle-style game with daily Bible words and verses from the Free Use Bible API",
+  "author": "Your Name",
+  "keywords": [
+    "bible",
+    "wordle",
+    "game",
+    "scripture",
+    "bible-game",
+    "daily-word",
+    "react",
+    "vite"
+  ],
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "gh-pages": "^6.3.0",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.3.6",
+    "vite": "^5.0.8"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

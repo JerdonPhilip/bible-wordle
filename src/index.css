@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply font-body antialiased transition-colors duration-300;
+    }
+
+    h1,
+    h2,
+    h3 {
+        @apply font-display;
+    }
+}
+
+@layer components {
+    .glass {
+        @apply bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-xl;
+    }
+
+    .glass-card {
+        @apply glass rounded-2xl transition-all duration-300 hover:shadow-2xl;
+    }
+
+    .glass-button {
+        @apply glass px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:bg-white/20 dark:hover:bg-white/10 active:scale-95;
+    }
+
+    .tile {
+        @apply flex items-center justify-center font-bold uppercase transition-all duration-300 rounded-lg shadow-md;
+    }
+
+    .tile-correct {
+        @apply bg-gradient-to-br from-green-500 to-green-600 text-white border-0 shadow-lg shadow-green-500/30;
+    }
+
+    .tile-present {
+        @apply bg-gradient-to-br from-yellow-500 to-amber-500 text-white border-0 shadow-lg shadow-yellow-500/30;
+    }
+
+    .tile-absent {
+        @apply bg-gradient-to-br from-gray-500 to-gray-600 text-white border-0;
+    }
+
+    .tile-empty {
+        @apply bg-white/20 dark:bg-white/5 border-2 border-white/30 dark:border-white/10 text-gray-800 dark:text-white;
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-200 dark:bg-gray-800 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-blue-500 to-purple-500 rounded-full;
+}
+
+/* Animations */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+}
