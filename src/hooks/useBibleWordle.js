@@ -95,13 +95,13 @@ export function useBibleWordle() {
         }
 
         if (guesses.includes(currentGuess)) {
-            setErrorMessage(`You already guessed "${currentGuess}"`);
+            setErrorMessage(`You already guessed "${currentGuess.toUpperCase()}"`);
             return;
         }
 
         // Validate against Bible word list
         if (!isValidBibleWord(currentGuess, wordLength, category)) {
-            setErrorMessage(`"${currentGuess}" is not a valid Bible ${wordLength}-letter word in the ${category} category`);
+            setErrorMessage(`"${currentGuess.toUpperCase()}" is not a valid Bible ${wordLength}-letter word in the ${category} category`);
             return;
         }
 

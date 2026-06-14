@@ -7,6 +7,8 @@
 @layer base {
     body {
         @apply font-body antialiased transition-colors duration-300;
+        /* Prevent zoom on input focus for mobile */
+        touch-action: manipulation;
     }
 
     h1,
@@ -18,7 +20,7 @@
 
 @layer components {
     .glass {
-        @apply bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-xl;
+        @apply bg-white/80 dark:bg-black/20 backdrop-blur-md border border-gray-200 dark:border-white/10 shadow-xl;
     }
 
     .glass-card {
@@ -26,7 +28,7 @@
     }
 
     .glass-button {
-        @apply glass px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:bg-white/20 dark:hover:bg-white/10 active:scale-95;
+        @apply glass px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold transition-all duration-200 active:scale-95;
     }
 
     .tile {
@@ -46,21 +48,63 @@
     }
 
     .tile-empty {
-        @apply bg-white/20 dark:bg-white/5 border-2 border-white/30 dark:border-white/10 text-gray-800 dark:text-white;
+        @apply bg-white/60 dark:bg-white/5 border-2 border-gray-300 dark:border-white/10 text-gray-800 dark:text-white;
     }
 }
 
-/* Custom scrollbar */
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Prevent zoom on input focus for mobile */
+@media (max-width: 768px) {
+
+    input,
+    textarea,
+    button {
+        font-size: 16px;
+    }
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 640px) {
+
+    button,
+    .keyboard button,
+    .category-selector button {
+        min-height: 44px;
+        cursor: pointer;
+    }
+}
+
+/* Smooth scrolling for mobile */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom thin scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 4px;
+    height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-    @apply bg-gray-200 dark:bg-gray-800 rounded-full;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-gradient-to-b from-blue-500 to-purple-500 rounded-full;
+    background: rgba(100, 100, 100, 0.3);
+    border-radius: 2px;
+}
+
+/* Hide scrollbar but keep functionality */
+* {
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    background: transparent;
 }
 
 /* Animations */
