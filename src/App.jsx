@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BookOpen, Lightbulb, ChevronDown, HelpCircle, Settings } from 'lucide-react';
+import { BookOpen, Lightbulb, ChevronDown, HelpCircle, Settings, BarChart3 } from 'lucide-react';
 import WordleGrid from './components/WordleGrid';
 import Keyboard from './components/Keyboard';
 import SettingsSheet from './components/SettingsSheet';
@@ -7,12 +7,15 @@ import ThemeToggle from './components/ThemeToggle';
 import Toast from './components/Toast';
 import HelpModal from './components/HelpModal';
 import EndGameModal from './components/EndGameModal';
+import StatsModal from './components/StatsModal';
 import CategoryIcon from './components/CategoryIcon';
 import { useBibleWordle } from './hooks/useBibleWordle';
 import { useTheme } from './context/ThemeContext';
 
 function App() {
   const {
+    mode,
+    changeMode,
     dailyWord,
     guesses,
     currentGuess,
@@ -25,10 +28,13 @@ function App() {
     clearError,
     wordLength,
     category,
-    showHint,
+    hintStage,
     shakeKey,
     handleKeyPress,
     resetGame,
+    resetStats,
+    stats,
+    puzzleNumber,
     changeWordLength,
     changeCategory,
     MAX_GUESSES,
@@ -37,6 +43,7 @@ function App() {
   const { theme } = useTheme();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [statsOpen, setStatsOpen] = useState(false);
   const [endModalOpen, setEndModalOpen] = useState(false);
   const [dismissedEnd, setDismissedEnd] = useState(false);
 
@@ -66,6 +73,18 @@ function App() {
 
   const attemptsLeft = MAX_GUESSES - guesses.length;
 
+  // Progressive hint content: first letter → full hint → last letter
+  const hintParts = [];
+  if (hintStage >= 1 && !gameOver && !gameWon) {
+    hintParts.push(`Starts with “${dailyWord.word[0].toUpperCase()}”`);
+  }
+  if (hintStage >= 2 && dailyWord.hint) {
+    hintParts.push(dailyWord.hint);
+  }
+  if (hintStage >= 3 && !gameOver && !gameWon && dailyWord.word.length > 1) {
+    hintParts.push(`Ends with “${dailyWord.word[dailyWord.word.length - 1].toUpperCase()}”`);
+  }
+
   return (
     <div className="app-shell">
       <div className="app-bg" />
@@ -78,6 +97,9 @@ function App() {
             <span>Bible Wordle</span>
           </h1>
           <div className="flex items-center gap-1.5">
+            <button type="button" onClick={() => setStatsOpen(true)} className="icon-btn" aria-label="Statistics">
+              <BarChart3 size={18} strokeWidth={2.25} />
+            </button>
             <button type="button" onClick={() => setHelpOpen(true)} className="icon-btn" aria-label="How to play">
               <HelpCircle size={18} strokeWidth={2.25} />
             </button>
@@ -92,7 +114,12 @@ function App() {
       {/* ===== Game area ===== */}
       <main className="relative z-10 flex-1 min-h-0 flex flex-col max-w-xl w-full mx-auto px-3">
         {/* Status chips */}
-        <div className="flex justify-center items-center gap-2 pt-2 shrink-0">
+        <div className="flex justify-center items-center gap-2 pt-2 shrink-0 flex-wrap">
+          {mode === 'daily' && (
+            <span className="chip cursor-default select-none text-purple-700 dark:text-purple-300">
+              Daily #{puzzleNumber}
+            </span>
+          )}
           <button type="button" className="chip" onClick={() => setSettingsOpen(true)}>
             <CategoryIcon category={category} size={13} />
             {category.charAt(0).toUpperCase() + category.slice(1)} · {wordLength} letters
@@ -103,12 +130,12 @@ function App() {
           )}
         </div>
 
-        {/* Hint banner */}
-        {showHint && dailyWord.hint && (
+        {/* Progressive hint banner */}
+        {hintParts.length > 0 && (
           <div className="shrink-0 mt-2 mx-auto w-full max-w-md glass-card border-yellow-400/60 bg-gradient-to-r from-yellow-500/15 to-orange-500/15 px-3 py-1.5 animate-fade-in">
-            <p className="flex items-center justify-center gap-1.5 text-xs font-semibold text-yellow-700 dark:text-yellow-300">
-              <Lightbulb size={13} strokeWidth={2.25} className="shrink-0" aria-hidden="true" />
-              <span className="truncate">Hint: {dailyWord.hint}</span>
+            <p className="flex items-start justify-center gap-1.5 text-xs font-semibold text-yellow-700 dark:text-yellow-300">
+              <Lightbulb size={13} strokeWidth={2.25} className="shrink-0 mt-px" aria-hidden="true" />
+              <span className="text-left">{hintParts.join(' · ')}</span>
             </p>
           </div>
         )}
@@ -149,9 +176,17 @@ function App() {
       {/* ===== Overlays ===== */}
       <Toast message={errorMessage} onDone={clearError} />
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
+      <StatsModal
+        open={statsOpen}
+        stats={stats}
+        onClose={() => setStatsOpen(false)}
+        onReset={() => { resetStats(); }}
+      />
       <SettingsSheet
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
+        mode={mode}
+        onModeChange={(m) => changeMode(m)}
         selectedLength={wordLength}
         selectedCategory={category}
         onLengthChange={(len) => { changeWordLength(len); setSettingsOpen(false); }}
@@ -165,6 +200,9 @@ function App() {
         wordLength={wordLength}
         verseData={verseData}
         loadingVerse={loadingVerse}
+        isDaily={mode === 'daily'}
+        puzzleNumber={puzzleNumber}
+        streak={stats.curStreak}
         onClose={() => { setEndModalOpen(false); setDismissedEnd(true); }}
         onPlayAgain={() => { setEndModalOpen(false); resetGame(); }}
       />

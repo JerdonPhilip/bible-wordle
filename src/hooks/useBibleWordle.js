@@ -1,10 +1,32 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getDailyWord, isValidBibleWord, getValidWordsForGame } from '../utils/wordList';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { getDailyWord, getDailyWordForDate, isValidBibleWord, getValidWordsForGame, dateKey, yesterdayKey } from '../utils/wordList';
 import { getVerseForWord } from '../utils/bibleApi';
 
 const MAX_GUESSES = 6;
+const STATS_KEY = 'bible-wordle-stats-v1';
+const MODE_KEY = 'bible-wordle-mode';
+
+const EMPTY_STATS = {
+    played: 0,
+    wins: 0,
+    curStreak: 0,
+    maxStreak: 0,
+    dist: [0, 0, 0, 0, 0, 0],
+    lastFinished: '',   // dateKey of the last recorded daily game
+    lastWinDate: '',    // dateKey of last win (for streak continuity)
+};
+
+const loadStats = () => {
+    try {
+        const raw = localStorage.getItem(STATS_KEY);
+        return raw ? { ...EMPTY_STATS, ...JSON.parse(raw) } : { ...EMPTY_STATS };
+    } catch {
+        return { ...EMPTY_STATS };
+    }
+};
 
 export function useBibleWordle() {
+    const [mode, setMode] = useState(() => localStorage.getItem(MODE_KEY) || 'daily');
     const [dailyWord, setDailyWord] = useState(null);
     const [guesses, setGuesses] = useState([]);
     const [currentGuess, setCurrentGuess] = useState('');
@@ -22,15 +44,25 @@ export function useBibleWordle() {
         absent: new Set()
     });
     const [shakeKey, setShakeKey] = useState(0);
-    const showHint = !gameOver && !gameWon && guesses.length >= 4;
+    const [stats, setStats] = useState(loadStats);
 
-    // Load new game when length or category changes
+    // Record each finished daily game exactly once per day
+    const statsRef = useRef(stats);
+    statsRef.current = stats;
+
+    // Progressive hints: stage 1 = first letter, stage 2 = full hint, stage 3 = + last letter
+    const hintStage = gameOver || gameWon ? 3 : guesses.length >= 5 ? 3 : guesses.length >= 4 ? 2 : guesses.length >= 2 ? 1 : 0;
+
+    // Load new game when length, category, or mode changes
     useEffect(() => {
         startNewGame();
-    }, [wordLength, category]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [wordLength, category, mode]);
 
     const startNewGame = async () => {
-        const word = getDailyWord(wordLength, category);
+        const word = mode === 'daily'
+            ? getDailyWordForDate(wordLength, category)
+            : getDailyWord(wordLength, category);
         setDailyWord(word);
         setGuesses([]);
         setCurrentGuess('');
@@ -39,7 +71,6 @@ export function useBibleWordle() {
         setErrorMessage('');
         setUsedLetters({ correct: new Set(), present: new Set(), absent: new Set() });
 
-        // Set valid words for this game
         const words = getValidWordsForGame(wordLength, category);
         setValidWords(words);
 
@@ -55,32 +86,25 @@ export function useBibleWordle() {
         setLoadingVerse(false);
     };
 
-    const checkLetter = useCallback((letter, index) => {
-        if (!dailyWord) return 'absent';
-        if (dailyWord.word[index] === letter) return 'correct';
-        if (dailyWord.word.includes(letter)) return 'present';
-        return 'absent';
-    }, [dailyWord]);
-
     const updateUsedLetters = useCallback((guess) => {
-        const newUsed = {
-            correct: new Set(usedLetters.correct),
-            present: new Set(usedLetters.present),
-            absent: new Set(usedLetters.absent)
-        };
-
-        guess.split('').forEach((letter, idx) => {
-            if (dailyWord.word[idx] === letter) {
-                newUsed.correct.add(letter);
-            } else if (dailyWord.word.includes(letter)) {
-                newUsed.present.add(letter);
-            } else {
-                newUsed.absent.add(letter);
-            }
+        setUsedLetters(prev => {
+            const next = {
+                correct: new Set(prev.correct),
+                present: new Set(prev.present),
+                absent: new Set(prev.absent)
+            };
+            guess.split('').forEach((letter, idx) => {
+                if (dailyWord.word[idx] === letter) {
+                    next.correct.add(letter);
+                } else if (dailyWord.word.includes(letter)) {
+                    next.present.add(letter);
+                } else {
+                    next.absent.add(letter);
+                }
+            });
+            return next;
         });
-
-        setUsedLetters(newUsed);
-    }, [dailyWord, usedLetters]);
+    }, [dailyWord]);
 
     const fail = (message) => {
         setErrorMessage(message);
@@ -105,7 +129,6 @@ export function useBibleWordle() {
             return;
         }
 
-        // Validate against Bible word list
         if (!isValidBibleWord(currentGuess, wordLength, category)) {
             fail(`"${currentGuess.toUpperCase()}" is not a valid Bible word in this category`);
             return;
@@ -113,7 +136,6 @@ export function useBibleWordle() {
 
         const newGuesses = [...guesses, currentGuess];
         setGuesses(newGuesses);
-
         updateUsedLetters(currentGuess);
 
         if (currentGuess === dailyWord.word) {
@@ -125,6 +147,34 @@ export function useBibleWordle() {
 
         setCurrentGuess('');
     }, [currentGuess, dailyWord, guesses, gameOver, updateUsedLetters, wordLength, category]);
+
+    // Stats: record once per day for daily mode
+    useEffect(() => {
+        if (!(gameOver && mode === 'daily') || !dailyWord) return;
+        const today = dateKey();
+        if (statsRef.current.lastFinished === today) return;
+
+        setStats(prev => {
+            const s = {
+                ...prev,
+                played: prev.played + 1,
+                dist: [...prev.dist],
+                lastFinished: today,
+                lastWinDate: prev.lastWinDate
+            };
+            if (gameWon) {
+                s.wins += 1;
+                s.dist[guesses.length - 1] = (s.dist[guesses.length - 1] || 0) + 1;
+                s.curStreak = s.lastWinDate === yesterdayKey() ? prev.curStreak + 1 : 1;
+                s.maxStreak = Math.max(prev.maxStreak, s.curStreak);
+                s.lastWinDate = today;
+            } else {
+                s.curStreak = 0;
+            }
+            try { localStorage.setItem(STATS_KEY, JSON.stringify(s)); } catch { /* storage full */ }
+            return s;
+        });
+    }, [gameOver, gameWon, guesses.length, mode, dailyWord]);
 
     const handleKeyPress = useCallback((key) => {
         if (gameOver) return;
@@ -167,7 +217,20 @@ export function useBibleWordle() {
         setCategory(newCategory);
     };
 
+    const changeMode = (newMode) => {
+        localStorage.setItem(MODE_KEY, newMode);
+        setMode(newMode);
+    };
+
+    const resetStats = () => {
+        const fresh = { ...EMPTY_STATS, dist: [...EMPTY_STATS.dist] };
+        localStorage.setItem(STATS_KEY, JSON.stringify(fresh));
+        setStats(fresh);
+    };
+
     return {
+        mode,
+        changeMode,
         dailyWord,
         guesses,
         currentGuess,
@@ -181,10 +244,13 @@ export function useBibleWordle() {
         wordLength,
         category,
         submitGuess,
-        showHint,
+        hintStage,
         shakeKey,
         handleKeyPress,
         resetGame,
+        resetStats,
+        stats,
+        puzzleNumber: dailyWord ? Math.max(1, Math.floor((new Date() - new Date(2024, 0, 1)) / 86400000) + 1) : null,
         changeWordLength,
         changeCategory,
         MAX_GUESSES

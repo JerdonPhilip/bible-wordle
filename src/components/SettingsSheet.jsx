@@ -1,9 +1,23 @@
 import React from 'react';
-import { X } from 'lucide-react';
+import { X, CalendarDays, Dices } from 'lucide-react';
 import CategoryIcon from './CategoryIcon';
 import { GAME_CONFIG } from '../utils/wordList';
 
-export default function SettingsSheet({ open, onClose, selectedLength, selectedCategory, onLengthChange, onCategoryChange }) {
+const MODES = [
+  { key: 'daily', label: 'Daily', icon: CalendarDays, blurb: "One word a day — builds your streak" },
+  { key: 'practice', label: 'Practice', icon: Dices, blurb: "Unlimited random words" },
+];
+
+export default function SettingsSheet({
+  open,
+  onClose,
+  mode,
+  onModeChange,
+  selectedLength,
+  selectedCategory,
+  onLengthChange,
+  onCategoryChange,
+}) {
   if (!open) return null;
 
   return (
@@ -20,6 +34,24 @@ export default function SettingsSheet({ open, onClose, selectedLength, selectedC
             <X size={18} strokeWidth={2.5} />
           </button>
         </div>
+
+        <p className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold mb-2">Mode</p>
+        <div className="grid grid-cols-2 gap-2 mb-3">
+          {MODES.map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => onModeChange(key)}
+              className={`opt-btn flex flex-col items-center gap-1 py-3 ${mode === key ? 'active' : ''}`}
+            >
+              <Icon size={18} strokeWidth={2.25} aria-hidden="true" />
+              {label}
+            </button>
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-500 dark:text-gray-400 mb-5">
+          {MODES.find(m => m.key === mode)?.blurb}
+        </p>
 
         <p className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold mb-2">Word length</p>
         <div className="flex gap-1.5 glass rounded-xl p-1 mb-5">

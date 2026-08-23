@@ -9,6 +9,9 @@ export default function EndGameModal({
   wordLength,
   verseData,
   loadingVerse,
+  isDaily,
+  puzzleNumber,
+  streak,
   onClose,
   onPlayAgain,
 }) {
@@ -27,7 +30,11 @@ export default function EndGameModal({
     const grid = guesses
       .map((g) => g.split('').map((_, i) => EMOJI[getStatus(g, i)]).join(''))
       .join('\n');
-    return `Bible Wordle ${guesses.length}/6 ${gameWon ? '' : '(X/6)'}\n${grid}`;
+    const scoreline = gameWon
+      ? `${guesses.length}/6`
+      : `X/6`;
+    const header = isDaily ? `Bible Wordle #${puzzleNumber} ${scoreline}` : `Bible Wordle ${scoreline}`;
+    return `${header}\n${grid}${gameWon && streak > 1 ? `\n🔥 Streak: ${streak}` : ''}`;
   };
 
   const handleShare = async () => {
