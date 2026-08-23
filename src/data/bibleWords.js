@@ -314,11 +314,11 @@ export const getAllValidBibleWords = () => {
 export const GAME_CONFIG = {
     wordLengths: [5, 6, 7],
     categories: {
-        people: "👥 People",
-        places: "📍 Places",
-        animals: "🦁 Animals",
-        things: "📦 Things",
-        events: "📅 Events",
-        concepts: "💡 Concepts"
+        people: "People",
+        places: "Places",
+        animals: "Animals",
+        things: "Things",
+        events: "Events",
+        concepts: "Concepts"
     }
 };

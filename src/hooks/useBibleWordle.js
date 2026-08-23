@@ -21,6 +21,7 @@ export function useBibleWordle() {
         present: new Set(),
         absent: new Set()
     });
+    const [shakeKey, setShakeKey] = useState(0);
     const showHint = !gameOver && !gameWon && guesses.length >= 4;
 
     // Load new game when length or category changes
@@ -81,27 +82,32 @@ export function useBibleWordle() {
         setUsedLetters(newUsed);
     }, [dailyWord, usedLetters]);
 
+    const fail = (message) => {
+        setErrorMessage(message);
+        setShakeKey(k => k + 1);
+    };
+
     const submitGuess = useCallback(() => {
         setErrorMessage('');
 
         if (gameOver) {
-            setErrorMessage('Game is over. Start a new game!');
+            fail('Game is over. Start a new game!');
             return;
         }
 
         if (currentGuess.length !== wordLength) {
-            setErrorMessage(`Word must be ${wordLength} letters long`);
+            fail(`Word must be ${wordLength} letters long`);
             return;
         }
 
         if (guesses.includes(currentGuess)) {
-            setErrorMessage(`You already guessed "${currentGuess.toUpperCase()}"`);
+            fail(`You already guessed "${currentGuess.toUpperCase()}"`);
             return;
         }
 
         // Validate against Bible word list
         if (!isValidBibleWord(currentGuess, wordLength, category)) {
-            setErrorMessage(`"${currentGuess.toUpperCase()}" is not a valid Bible ${wordLength}-letter word in the ${category} category`);
+            fail(`"${currentGuess.toUpperCase()}" is not a valid Bible word in this category`);
             return;
         }
 
@@ -171,10 +177,12 @@ export function useBibleWordle() {
         loadingVerse,
         usedLetters,
         errorMessage,
+        clearError: () => setErrorMessage(''),
         wordLength,
         category,
         submitGuess,
         showHint,
+        shakeKey,
         handleKeyPress,
         resetGame,
         changeWordLength,

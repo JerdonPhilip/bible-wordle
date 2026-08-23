@@ -5,14 +5,33 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
     <meta name="description" content="Bible Wordle - A Wordle-style game with daily Bible words and verses" />
     <meta name="keywords" content="bible, wordle, game, scripture, bible verses, daily word" />
     <meta name="author" content="Your Name" />
     <meta property="og:title" content="Bible Wordle" />
-    <meta property="og:description" content="Guess the daily 5-letter Bible word in 6 tries!" />
+    <meta property="og:description" content="Guess the daily Bible word in 6 tries!" />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#3B82F6" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" id="meta-theme-color" content="#0b1020" />
+    <script>
+        // Apply saved/system theme before first paint to avoid flashing the wrong mode
+        (function () {
+            try {
+                var t = localStorage.getItem('bible-wordle-theme');
+                if (t !== 'light' && t !== 'dark') {
+                    t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+                }
+                document.documentElement.classList.toggle('dark', t === 'dark');
+                document.documentElement.style.colorScheme = t;
+                var meta = document.getElementById('meta-theme-color');
+                if (meta) meta.setAttribute('content', t === 'light' ? '#e4e8f3' : '#0b1020');
+            } catch (e) { }
+        })();
+    </script>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>Bible Wordle - Daily Bible Word Game</title>
 </head>
 

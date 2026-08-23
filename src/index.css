@@ -1,128 +1,423 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    body {
-        @apply font-body antialiased transition-colors duration-300;
-        /* Prevent zoom on input focus for mobile */
-        touch-action: manipulation;
-    }
+/* ===== BASE / APP SHELL ===== */
 
-    h1,
-    h2,
-    h3 {
-        @apply font-display;
-    }
+html,
+body,
+#root {
+    height: 100%;
 }
 
-@layer components {
-    .glass {
-        @apply bg-white/80 dark:bg-black/20 backdrop-blur-md border border-gray-200 dark:border-white/10 shadow-xl;
-    }
-
-    .glass-card {
-        @apply glass rounded-2xl transition-all duration-300 hover:shadow-2xl;
-    }
-
-    .glass-button {
-        @apply glass px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold transition-all duration-200 active:scale-95;
-    }
-
-    .tile {
-        @apply flex items-center justify-center font-bold uppercase transition-all duration-300 rounded-lg shadow-md;
-    }
-
-    .tile-correct {
-        @apply bg-gradient-to-br from-green-500 to-green-600 text-white border-0 shadow-lg shadow-green-500/30;
-    }
-
-    .tile-present {
-        @apply bg-gradient-to-br from-yellow-500 to-amber-500 text-white border-0 shadow-lg shadow-yellow-500/30;
-    }
-
-    .tile-absent {
-        @apply bg-gradient-to-br from-gray-500 to-gray-600 text-white border-0;
-    }
-
-    .tile-empty {
-        @apply bg-white/60 dark:bg-white/5 border-2 border-gray-300 dark:border-white/10 text-gray-800 dark:text-white;
-    }
-}
-
-/* ===== MOBILE RESPONSIVE STYLES ===== */
-
-/* Prevent zoom on input focus for mobile */
-@media (max-width: 768px) {
-
-    input,
-    textarea,
-    button {
-        font-size: 16px;
-    }
-}
-
-/* Better touch targets for mobile */
-@media (max-width: 640px) {
-
-    button,
-    .keyboard button,
-    .category-selector button {
-        min-height: 44px;
-        cursor: pointer;
-    }
-}
-
-/* Smooth scrolling for mobile */
 html {
-    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
-/* Custom thin scrollbar */
-::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+body {
+    @apply font-body antialiased text-gray-900 dark:text-white;
+    /* Fixed app shell: no page scroll, no rubber-banding */
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    touch-action: manipulation;
+    background-color: #e4e8f3;
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
+.dark body {
+    background-color: #0b1020;
 }
 
-::-webkit-scrollbar-thumb {
-    background: rgba(100, 100, 100, 0.3);
-    border-radius: 2px;
+h1,
+h2,
+h3 {
+    @apply font-display;
 }
 
-/* Hide scrollbar but keep functionality */
-* {
-    scrollbar-width: thin;
-    -ms-overflow-style: none;
+button {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
 }
 
-*::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    background: transparent;
+/* ===== APP BACKGROUND (subtle, cheap on GPU) ===== */
+
+.app-shell {
+    position: relative;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-top: env(safe-area-inset-top);
 }
 
-/* Animations */
-@keyframes gradient-shift {
-    0% {
-        background-position: 0% 50%;
+.app-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(60% 45% at 85% -5%, rgba(168, 85, 247, 0.22), transparent 70%),
+        radial-gradient(55% 40% at 10% 110%, rgba(59, 130, 246, 0.20), transparent 70%),
+        radial-gradient(40% 30% at 90% 90%, rgba(236, 72, 153, 0.13), transparent 70%);
+}
+
+.dark .app-bg {
+    background:
+        radial-gradient(60% 45% at 85% -5%, rgba(147, 51, 234, 0.28), transparent 70%),
+        radial-gradient(55% 40% at 10% 110%, rgba(37, 99, 235, 0.22), transparent 70%),
+        radial-gradient(40% 30% at 90% 90%, rgba(219, 39, 119, 0.14), transparent 70%);
+}
+
+/* ===== GLASS SURFACES ===== */
+
+.glass {
+    @apply bg-white/70 dark:bg-white/[0.06] backdrop-blur-md border border-gray-300/80 dark:border-white/10;
+}
+
+.glass-card {
+    @apply glass rounded-2xl;
+}
+
+.icon-btn {
+    @apply flex items-center justify-center rounded-xl w-9 h-9 sm:w-10 sm:h-10 glass text-gray-700 dark:text-white/90 transition-transform active:scale-90 hover:bg-white dark:hover:bg-white/10;
+}
+
+.chip {
+    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold glass text-gray-700 dark:text-white/90 cursor-pointer select-none transition-transform active:scale-95;
+}
+
+.seg-btn {
+    @apply flex-1 py-2 rounded-lg text-sm font-bold text-gray-600 dark:text-white/60 transition-all active:scale-95;
+}
+
+.seg-btn.active {
+    @apply bg-white dark:bg-white/15 text-blue-600 dark:text-white shadow;
+}
+
+.opt-btn {
+    @apply px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-white/80 glass transition-all duration-200 active:scale-95 w-full;
+}
+
+.opt-btn.active {
+    @apply bg-gradient-to-r from-emerald-500 to-teal-500 border-transparent text-white shadow-md shadow-emerald-500/25;
+}
+
+.primary-btn {
+    @apply w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg shadow-purple-500/25 transition-all duration-200 active:scale-[0.97];
+}
+
+/* ===== BOARD ===== */
+
+.board {
+    --cols: 5;
+    --gap: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    width: 100%;
+}
+
+.board-row {
+    display: flex;
+    gap: var(--gap);
+    width: 100%;
+    justify-content: center;
+}
+
+/* Small demonstration boards (help modal) */
+.demo-board .tile {
+    font-size: 13px;
+    border-radius: 6px;
+}
+
+.tile {
+    flex: 1 1 0;
+    aspect-ratio: 1 / 1;
+    max-width: min(58px, 12vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-radius: 10px;
+    /* Scales with available width, then clamps to match the tile's max-width */
+    font-size: calc(min((100vw - 36px - (var(--cols) - 1) * var(--gap)) / var(--cols), 60px) * 0.55);
+    line-height: 1;
+    user-select: none;
+}
+
+@media (min-width: 640px) {
+    .tile {
+        max-width: 60px;
     }
+}
 
-    50% {
-        background-position: 100% 50%;
+.tile-filled {
+    @apply bg-white/90 dark:bg-white/[0.04] border-2 border-gray-500 dark:border-white/25 text-gray-900 dark:text-white shadow-sm;
+}
+
+.tile-empty {
+    @apply bg-white/80 dark:bg-white/[0.03] border-2 border-gray-400/90 dark:border-white/10 text-gray-900 dark:text-white shadow-sm;
+}
+
+.tile-correct {
+    @apply bg-emerald-500 border-2 border-emerald-500 text-white shadow-md shadow-emerald-500/30;
+}
+
+.tile-present {
+    @apply bg-amber-500 border-2 border-amber-500 text-white shadow-md shadow-amber-500/30;
+}
+
+.tile-absent {
+    @apply bg-gray-400 dark:bg-gray-600/70 border-2 border-gray-400 dark:border-gray-600/70 text-white;
+}
+
+/* Current-row typing pop */
+.tile-pop {
+    animation: pop 0.12s ease-out;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(0.92);
     }
 
     100% {
-        background-position: 0% 50%;
+        transform: scale(1);
     }
 }
 
-.animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 3s ease infinite;
+/* Staggered reveal flip */
+.tile-flip {
+    animation: flip 0.55s ease forwards;
+    backface-visibility: hidden;
+}
+
+@keyframes flip {
+    0% {
+        transform: rotateX(0deg);
+    }
+
+    45% {
+        transform: rotateX(90deg);
+    }
+
+    55% {
+        transform: rotateX(90deg);
+    }
+
+    100% {
+        transform: rotateX(0deg);
+    }
+}
+
+.row-shake {
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translateX(-2px);
+    }
+
+    20%,
+    80% {
+        transform: translateX(4px);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translateX(-6px);
+    }
+
+    40%,
+    60% {
+        transform: translateX(6px);
+    }
+}
+
+.win-bounce {
+    animation: winBounce 0.7s ease;
+}
+
+@keyframes winBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    25% {
+        transform: translateY(-14px);
+    }
+
+    50% {
+        transform: translateY(3px);
+    }
+
+    75% {
+        transform: translateY(-6px);
+    }
+}
+
+/* ===== KEYBOARD ===== */
+
+.keyboard {
+    @apply w-full max-w-xl mx-auto px-1.5 pt-2 pb-[max(env(safe-area-inset-bottom),8px)] glass rounded-t-2xl;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.dark .keyboard {
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.kb-row {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 7px;
+}
+
+.key {
+    flex: 1 1 0;
+    height: clamp(44px, 6.2vh, 56px);
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: clamp(13px, 3.4vw, 16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    @apply bg-white border border-gray-300/90 text-gray-900 dark:bg-white/[0.08] dark:border-white/10 dark:text-white active:scale-95 transition-transform duration-100;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+
+.key-wide {
+    flex: 1.6 1 0;
+    font-size: clamp(11px, 2.9vw, 13px);
+    padding: 0 6px;
+}
+
+.key-correct {
+    @apply bg-emerald-500 border-transparent text-white;
+}
+
+.key-present {
+    @apply bg-amber-500 border-transparent text-white;
+}
+
+.key-absent {
+    @apply bg-gray-300/80 dark:bg-white/[0.04] border-transparent text-gray-400 dark:text-white/25 shadow-none;
+}
+
+/* ===== OVERLAYS (sheet / modal / toast) ===== */
+
+.overlay-backdrop {
+    @apply fixed inset-0 z-40 bg-black/50 backdrop-blur-sm animate-fade-in;
+}
+
+.sheet-panel {
+    @apply fixed left-0 right-0 bottom-0 z-50 mx-auto w-full max-w-lg glass-card rounded-b-none rounded-t-3xl p-5 pb-[max(env(safe-area-inset-bottom),20px)] animate-slide-up;
+}
+
+.modal-panel {
+    @apply fixed left-1/2 top-1/2 z-50 w-[calc(100vw-32px)] max-w-md -translate-x-1/2 -translate-y-1/2 glass-card rounded-3xl p-5 sm:p-6 animate-modal-in max-h-[85dvh] overflow-y-auto;
+}
+
+.toast {
+    @apply fixed top-3 left-1/2 -translate-x-1/2 z-50 max-w-[calc(100vw-32px)] px-4 py-2.5 rounded-xl text-sm font-semibold glass-card shadow-xl animate-toast-in;
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.animate-toast-in {
+    animation: toastIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes modalIn {
+    0% {
+        transform: scale(0.85) translate(-50%, -50%);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.02) translate(-50%, -50%);
+    }
+
+    100% {
+        transform: scale(1) translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+.animate-modal-in {
+    animation: modalIn 0.3s ease-out;
+}
+
+/* Scrollbar hidden but scrollable */
+.scroll-y {
+    overflow-y: auto;
+    scrollbar-width: none;
+    overscroll-behavior: contain;
+}
+
+.scroll-y::-webkit-scrollbar {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

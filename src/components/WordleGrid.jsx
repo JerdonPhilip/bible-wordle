@@ -1,64 +1,82 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function WordleGrid({ guesses, currentGuess, wordLength, maxGuesses, dailyWord }) {
-  const emptyRows = maxGuesses - guesses.length - 1;
-  
+export default function WordleGrid({ guesses, currentGuess, wordLength, maxGuesses, dailyWord, gameWon, shakeKey }) {
+  const [shaking, setShaking] = useState(false);
+
   const getLetterStatus = (guess, position) => {
     if (!dailyWord) return 'empty';
     const letter = guess[position];
     if (!letter) return 'empty';
-    
     if (dailyWord.word[position] === letter) return 'correct';
     if (dailyWord.word.includes(letter)) return 'present';
     return 'absent';
   };
 
-  // Responsive tile sizes based on screen width and word length
-  const getTileWidth = () => {
-    if (wordLength === 5) {
-      return 'w-12 h-12 sm:w-14 sm:h-14 text-xl sm:text-2xl';
+  useEffect(() => {
+    if (!shakeKey) return;
+    setShaking(true);
+  }, [shakeKey]);
+
+  const newestRow = guesses.length - 1;
+  const emptyRows = maxGuesses - guesses.length - (guesses.length < maxGuesses ? 1 : 0);
+
+  const tileClass = (status) => {
+    switch (status) {
+      case 'correct': return 'tile tile-correct';
+      case 'present': return 'tile tile-present';
+      case 'absent': return 'tile tile-absent';
+      default: return 'tile tile-empty';
     }
-    if (wordLength === 6) {
-      return 'w-10 h-10 sm:w-12 sm:h-12 text-lg sm:text-xl';
-    }
-    return 'w-9 h-9 sm:w-10 sm:h-10 text-base sm:text-lg';
   };
 
   return (
-    <div className="grid grid-rows-6 gap-1.5 sm:gap-2">
-      {guesses.map((guess, idx) => (
-        <div key={idx} className="flex gap-1.5 sm:gap-2 justify-center">
-          {guess.split('').map((letter, pos) => {
-            const status = getLetterStatus(guess, pos);
-            let tileClass = "tile " + getTileWidth();
-            if (status === 'correct') tileClass += " tile-correct";
-            else if (status === 'present') tileClass += " tile-present";
-            else if (status === 'absent') tileClass += " tile-absent";
-            else tileClass += " tile-empty";
-            
-            return (
-              <div key={pos} className={tileClass}>
+    <div className="board mx-auto" style={{ '--cols': wordLength }}>
+      {guesses.map((guess, idx) => {
+        const isNewest = idx === newestRow;
+        return (
+          <div
+            key={idx}
+            className={`board-row ${gameWon && isNewest ? 'win-bounce' : ''}`}
+            style={gameWon && isNewest ? { animationDelay: `${wordLength * 140 + 250}ms` } : undefined}
+          >
+            {guess.split('').map((letter, pos) => {
+              const status = getLetterStatus(guess, pos);
+              const revealDelay = isNewest ? `${pos * 140}ms` : undefined;
+              return (
+                <div
+                  key={pos}
+                  className={`${tileClass(status)} ${isNewest ? 'tile-flip' : ''}`}
+                  style={{ animationDelay: revealDelay }}
+                >
+                  {letter}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+
+      {/* Active input row */}
+      {guesses.length < maxGuesses && (
+        <div className={`board-row ${shaking ? 'row-shake' : ''}`} onAnimationEnd={() => setShaking(false)}>
+          {Array(wordLength).fill(0).map((_, pos) => {
+            const letter = currentGuess[pos];
+            return letter ? (
+              <div key={`${pos}-${currentGuess.length}-${shakeKey}`} className="tile tile-filled tile-pop">
                 {letter}
               </div>
+            ) : (
+              <div key={pos} className="tile tile-empty" />
             );
           })}
         </div>
-      ))}
-      
-      {guesses.length < maxGuesses && (
-        <div className="flex gap-1.5 sm:gap-2 justify-center">
-          {Array(wordLength).fill(0).map((_, pos) => (
-            <div key={pos} className={`tile ${getTileWidth()} tile-empty`}>
-              {currentGuess[pos] || ''}
-            </div>
-          ))}
-        </div>
       )}
-      
+
+      {/* Remaining empty rows */}
       {Array(emptyRows).fill(0).map((_, idx) => (
-        <div key={`empty-${idx}`} className="flex gap-1.5 sm:gap-2 justify-center">
+        <div key={`empty-${idx}`} className="board-row opacity-50">
           {Array(wordLength).fill(0).map((_, pos) => (
-            <div key={pos} className={`tile ${getTileWidth()} bg-white/10 dark:bg-white/5 border border-white/20`} />
+            <div key={pos} className="tile tile-empty" />
           ))}
         </div>
       ))}
