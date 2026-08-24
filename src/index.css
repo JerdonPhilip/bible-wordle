@@ -405,6 +405,30 @@ button {
     animation: modalIn 0.3s ease-out;
 }
 
+/* ===== THEME TRANSITION ===== */
+
+/* Let the circular reveal from the toggle button drive the swap
+   instead of the default whole-page cross-fade */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+/* Fallback for browsers without View Transitions: brief global color fade */
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+    transition:
+        background-color 0.4s ease,
+        border-color 0.4s ease,
+        color 0.4s ease,
+        fill 0.4s ease,
+        stroke 0.4s ease,
+        box-shadow 0.4s ease !important;
+}
+
 /* Scrollbar hidden but scrollable */
 .scroll-y {
     overflow-y: auto;
