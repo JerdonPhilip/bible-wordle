@@ -2,37 +2,6 @@
 // Source: https://dictionaryapi.dev/
 const DICTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en';
 
-// Cache for validated words to reduce API calls
-const wordCache = new Map();
-
-export async function isValidEnglishWord(word) {
-    // Check cache first
-    if (wordCache.has(word)) {
-        return wordCache.get(word);
-    }
-
-    try {
-        const response = await fetch(`${DICTIONARY_API}/${word.toLowerCase()}`);
-        const isValid = response.status === 200;
-
-        // Cache the result
-        wordCache.set(word, isValid);
-
-        // Limit cache size (keep last 1000 words)
-        if (wordCache.size > 1000) {
-            const firstKey = wordCache.keys().next().value;
-            wordCache.delete(firstKey);
-        }
-
-        return isValid;
-    } catch (error) {
-        console.error('Dictionary API error:', error);
-        // If API fails, allow the word (fallback)
-        return true;
-    }
-}
-
-// Get word definition (for extra feature)
 export async function getWordDefinition(word) {
     try {
         const response = await fetch(`${DICTIONARY_API}/${word.toLowerCase()}`);

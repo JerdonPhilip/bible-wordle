@@ -27,9 +27,6 @@ export function scoreGuess(guess, target) {
     return statuses;
 }
 
-// Keyboard aggregation priority: correct beats present beats absent
-export const STATUS_RANK = { absent: 0, present: 1, correct: 2 };
-
 // Merge a scored guess into accumulated keyboard state { correct, present, absent } Sets
 export function mergeKeyboardState(state, guess, statuses) {
     const next = {

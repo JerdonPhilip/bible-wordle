@@ -1,59 +1,32 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { getDailyWord, getDailyWordForDate, isValidBibleWord, getValidWordsForGame, dateKey, yesterdayKey, getPuzzleNumber } from '../utils/wordList';
-import { getVerseForWord } from '../utils/bibleApi';
+import { getDailyWord, getDailyWordForDate, isValidBibleWord, getPuzzleNumber } from '../utils/wordList';
 import { getHardModeViolation } from '../utils/hardMode';
 import { scoreGuess, mergeKeyboardState } from '../utils/wordScoring';
-
-const MAX_GUESSES = 6;
-const STATS_KEY = 'bible-wordle-stats-v1';
-const MODE_KEY = 'bible-wordle-mode';
-const HARD_MODE_KEY = 'bible-wordle-hard-mode';
-
-const EMPTY_STATS = {
-    played: 0,
-    wins: 0,
-    curStreak: 0,
-    maxStreak: 0,
-    dist: [0, 0, 0, 0, 0, 0],
-    lastFinished: '',   // dateKey of the last recorded daily game
-    lastWinDate: '',    // dateKey of last win (for streak continuity)
-};
-
-const loadStats = () => {
-    try {
-        const raw = localStorage.getItem(STATS_KEY);
-        return raw ? { ...EMPTY_STATS, ...JSON.parse(raw) } : { ...EMPTY_STATS };
-    } catch {
-        return { ...EMPTY_STATS };
-    }
-};
+import { MAX_GUESSES, STORAGE_KEYS, TRANSLATIONS, DEFAULT_TRANSLATION } from '../config';
+import { useStats } from './bible-wordle/useStats';
+import { useVerse } from './bible-wordle/useVerse';
 
 export function useBibleWordle() {
-    const [mode, setMode] = useState(() => localStorage.getItem(MODE_KEY) || 'daily');
-    const [hardMode, setHardMode] = useState(() => localStorage.getItem(HARD_MODE_KEY) === 'true');
+    const [mode, setMode] = useState(() => localStorage.getItem(STORAGE_KEYS.mode) || 'daily');
+    const [hardMode, setHardMode] = useState(() => localStorage.getItem(STORAGE_KEYS.hardMode) === 'true');
+    const [translation, setTranslation] = useState(() => localStorage.getItem(STORAGE_KEYS.translation) || DEFAULT_TRANSLATION);
     const [dailyWord, setDailyWord] = useState(null);
     const [guesses, setGuesses] = useState([]);
     const [currentGuess, setCurrentGuess] = useState('');
     const [gameOver, setGameOver] = useState(false);
     const [gameWon, setGameWon] = useState(false);
     const [revealed, setRevealed] = useState(false);
-    const [verseData, setVerseData] = useState(null);
-    const [loadingVerse, setLoadingVerse] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [wordLength, setWordLength] = useState(5);
     const [category, setCategory] = useState('people');
-    const [validWords, setValidWords] = useState([]);
     const [usedLetters, setUsedLetters] = useState({
         correct: new Set(),
         present: new Set(),
         absent: new Set()
     });
     const [shakeKey, setShakeKey] = useState(0);
-    const [stats, setStats] = useState(loadStats);
 
-    // Record each finished daily game exactly once per day
-    const statsRef = useRef(stats);
-    statsRef.current = stats;
+    const { verseData, loadingVerse, loadVerse } = useVerse();
 
     // Progressive hints: stage 1 = first letter, stage 2 = full hint, stage 3 = + last letter
     const hintStage = gameOver || gameWon ? 3 : guesses.length >= 5 ? 3 : guesses.length >= 4 ? 2 : guesses.length >= 2 ? 1 : 0;
@@ -63,6 +36,19 @@ export function useBibleWordle() {
         startNewGame();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wordLength, category, mode]);
+
+    // Re-fetch the verse when the translation changes (game stays intact)
+    const skipTranslationEffect = useRef(true);
+    useEffect(() => {
+        if (skipTranslationEffect.current) {
+            skipTranslationEffect.current = false;
+            return;
+        }
+        if (dailyWord) {
+            loadVerse(dailyWord.word, dailyWord.reference, translation);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [translation]);
 
     const startNewGame = async () => {
         const word = mode === 'daily'
@@ -76,20 +62,7 @@ export function useBibleWordle() {
         setRevealed(false);
         setErrorMessage('');
         setUsedLetters({ correct: new Set(), present: new Set(), absent: new Set() });
-
-        const words = getValidWordsForGame(wordLength, category);
-        setValidWords(words);
-
-        await loadVerse(word.word, word.reference);
-    };
-
-    const loadVerse = async (word, reference) => {
-        setLoadingVerse(true);
-        const verse = await getVerseForWord(word, reference);
-        if (verse) {
-            setVerseData(verse);
-        }
-        setLoadingVerse(false);
+        await loadVerse(word.word, word.reference, translation);
     };
 
     const updateUsedLetters = useCallback((guess) => {
@@ -144,35 +117,7 @@ export function useBibleWordle() {
         }
 
         setCurrentGuess('');
-    }, [currentGuess, dailyWord, guesses, gameOver, updateUsedLetters, wordLength, category, hardMode]);
-
-    // Stats: record once per day for daily mode
-    useEffect(() => {
-        if (!(gameOver && mode === 'daily') || !dailyWord) return;
-        const today = dateKey();
-        if (statsRef.current.lastFinished === today) return;
-
-        setStats(prev => {
-            const s = {
-                ...prev,
-                played: prev.played + 1,
-                dist: [...prev.dist],
-                lastFinished: today,
-                lastWinDate: prev.lastWinDate
-            };
-            if (gameWon) {
-                s.wins += 1;
-                s.dist[guesses.length - 1] = (s.dist[guesses.length - 1] || 0) + 1;
-                s.curStreak = s.lastWinDate === yesterdayKey() ? prev.curStreak + 1 : 1;
-                s.maxStreak = Math.max(prev.maxStreak, s.curStreak);
-                s.lastWinDate = today;
-            } else {
-                s.curStreak = 0;
-            }
-            try { localStorage.setItem(STATS_KEY, JSON.stringify(s)); } catch { /* storage full */ }
-            return s;
-        });
-    }, [gameOver, gameWon, guesses.length, mode, dailyWord]);
+    }, [currentGuess, dailyWord, guesses, gameOver, hardMode, updateUsedLetters, wordLength, category]);
 
     const handleKeyPress = useCallback((key) => {
         if (gameOver) return;
@@ -203,21 +148,26 @@ export function useBibleWordle() {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyPress]);
 
-    const resetGame = () => {
-        startNewGame();
-    };
+    const resetGame = () => startNewGame();
 
-    const changeWordLength = (length) => {
-        setWordLength(length);
-    };
+    const changeWordLength = (length) => setWordLength(length);
 
-    const changeCategory = (newCategory) => {
-        setCategory(newCategory);
-    };
+    const changeCategory = (newCategory) => setCategory(newCategory);
 
     const changeMode = (newMode) => {
-        localStorage.setItem(MODE_KEY, newMode);
+        localStorage.setItem(STORAGE_KEYS.mode, newMode);
         setMode(newMode);
+    };
+
+    const changeHardMode = (enabled) => {
+        localStorage.setItem(STORAGE_KEYS.hardMode, String(enabled));
+        setHardMode(enabled);
+    };
+
+    const changeTranslation = (code) => {
+        if (!TRANSLATIONS.some(t => t.code === code)) return;
+        localStorage.setItem(STORAGE_KEYS.translation, code);
+        setTranslation(code);
     };
 
     // Practice-mode only: quit and reveal the answer without a win
@@ -227,22 +177,20 @@ export function useBibleWordle() {
         setGameOver(true);
     };
 
-    const changeHardMode = (enabled) => {
-        localStorage.setItem(HARD_MODE_KEY, String(enabled));
-        setHardMode(enabled);
-    };
-
-    const resetStats = () => {
-        const fresh = { ...EMPTY_STATS, dist: [...EMPTY_STATS.dist] };
-        localStorage.setItem(STATS_KEY, JSON.stringify(fresh));
-        setStats(fresh);
-    };
+    // Stats are recorded once per day for finished daily games
+    const { stats, resetStats } = useStats(
+        gameOver && mode === 'daily' && !!dailyWord,
+        gameWon,
+        guesses.length
+    );
 
     return {
         mode,
         changeMode,
         hardMode,
         changeHardMode,
+        translation,
+        changeTranslation,
         dailyWord,
         guesses,
         currentGuess,

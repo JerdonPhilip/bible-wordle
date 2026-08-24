@@ -22,6 +22,8 @@ function App() {
     changeMode,
     hardMode,
     changeHardMode,
+    translation,
+    changeTranslation,
     dailyWord,
     guesses,
     currentGuess,
@@ -211,10 +213,12 @@ function App() {
         onModeChange={(m) => changeMode(m)}
         selectedLength={wordLength}
         selectedCategory={category}
+        selectedTranslation={translation}
         onLengthChange={(len) => { changeWordLength(len); setSettingsOpen(false); }}
         onCategoryChange={(cat) => { changeCategory(cat); setSettingsOpen(false); }}
         hardMode={hardMode}
         onHardModeChange={(enabled) => changeHardMode(enabled)}
+        onTranslationChange={(code) => changeTranslation(code)}
       />
       <EndGameModal
         open={endModalOpen && !dismissedEnd}

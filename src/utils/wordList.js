@@ -1,4 +1,4 @@
-import { getWordList, getAllValidBibleWords, GAME_CONFIG } from '../data/bibleWords';
+import { getWordList, GAME_CONFIG } from '../data/bibleWords';
 
 // ---------- Date helpers ----------
 // All daily-rotation math is UTC so every player worldwide gets the same
@@ -61,15 +61,19 @@ export function getDailyWordForDate(wordLength = 5, category = 'people', key = d
     return buildDaily(entry, category, wordLength);
 }
 
-// Validate if word is in Bible word list
+// Validate if word is in Bible word list (O(1) via lazily-built lookup sets)
+const validSetCache = new Map();
+
+function getValidSet(wordLength, category) {
+    const key = `${wordLength}:${category}`;
+    if (!validSetCache.has(key)) {
+        validSetCache.set(key, new Set(getWordList(wordLength, category).map(item => item.word.toLowerCase())));
+    }
+    return validSetCache.get(key);
+}
+
 export function isValidBibleWord(word, wordLength, category) {
-    const wordList = getWordList(wordLength, category);
-    return wordList.some(item => item.word.toLowerCase() === word.toLowerCase());
+    return getValidSet(wordLength, category).has(word.toLowerCase());
 }
 
-// Get all valid words for current game
-export function getValidWordsForGame(wordLength, category) {
-    return getWordList(wordLength, category).map(item => item.word.toLowerCase());
-}
-
-export { getAllValidBibleWords, GAME_CONFIG };
+export { GAME_CONFIG };

@@ -475,18 +475,6 @@ export const getWordList = (wordLength, category) => {
     return BIBLE_WORDS[wordLength][category];
 };
 
-export const getAllValidBibleWords = () => {
-    const allWords = new Set();
-    [5, 6, 7].forEach(length => {
-        Object.keys(BIBLE_WORDS[length]).forEach(category => {
-            BIBLE_WORDS[length][category].forEach(item => {
-                allWords.add(item.word.toLowerCase());
-            });
-        });
-    });
-    return allWords;
-};
-
 export const GAME_CONFIG = {
     wordLengths: [5, 6, 7],
     categories: {

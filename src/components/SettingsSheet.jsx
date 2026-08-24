@@ -1,7 +1,8 @@
 import React from 'react';
-import { X, CalendarDays, Dices } from 'lucide-react';
+import { X, CalendarDays, Dices, BookOpen } from 'lucide-react';
 import CategoryIcon from './CategoryIcon';
 import { GAME_CONFIG } from '../utils/wordList';
+import { TRANSLATIONS } from '../config';
 
 const MODES = [
   { key: 'daily', label: 'Daily', icon: CalendarDays, blurb: "One word a day — builds your streak" },
@@ -15,10 +16,12 @@ export default function SettingsSheet({
   onModeChange,
   selectedLength,
   selectedCategory,
+  selectedTranslation,
   onLengthChange,
   onCategoryChange,
-  hardMode,
   onHardModeChange,
+  hardMode,
+  onTranslationChange,
 }) {
   if (!open) return null;
 
@@ -83,6 +86,24 @@ export default function SettingsSheet({
             </button>
           ))}
         </div>
+
+        <p className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold mb-2">Bible translation</p>
+        <div className="grid grid-cols-4 gap-1.5 glass rounded-xl p-1 mb-2">
+          {TRANSLATIONS.map(({ code, label }) => (
+            <button
+              key={code}
+              type="button"
+              onClick={() => onTranslationChange(code)}
+              className={`seg-btn ${selectedTranslation === code ? 'active' : ''}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <p className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400 mb-5">
+          <BookOpen size={11} strokeWidth={2.25} aria-hidden="true" />
+          {TRANSLATIONS.find(t => t.code === selectedTranslation)?.name} — used for victory verses
+        </p>
 
         <p className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold mb-2">Difficulty</p>
         <button
