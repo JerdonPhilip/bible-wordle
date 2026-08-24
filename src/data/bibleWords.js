@@ -5,6 +5,102 @@
 // Every entry carries a KJV `reference` used to fetch the victory verse.
 
 export const BIBLE_WORDS = {
+    // ==================== 4-LETTER WORDS ====================
+    4: {
+        people: [
+            { word: "paul", hint: "Apostle who wrote many epistles, once named Saul", reference: "Acts 13:9" },
+            { word: "saul", hint: "Israel's first king, of Benjamin's tribe", reference: "1 Samuel 10:24" },
+            { word: "ruth", hint: "Moabite woman whose God became her own", reference: "Ruth 1:16" },
+            { word: "noah", hint: "Built the ark and rode out the flood", reference: "Genesis 6:22" },
+            { word: "cain", hint: "First murderer; killed his brother Abel", reference: "Genesis 4:8" },
+            { word: "abel", hint: "Shepherd whose offering God favored", reference: "Genesis 4:4" },
+            { word: "mary", hint: "Mother of Jesus, praised for believing", reference: "Luke 1:31" },
+            { word: "john", hint: "Baptizer crying in the wilderness", reference: "Matthew 3:1" },
+            { word: "leah", hint: "Jacob's first wife, mother of Judah", reference: "Genesis 29:23" },
+            { word: "joel", hint: "Prophet of the outpoured Spirit promise", reference: "Joel 2:28" },
+            { word: "amos", hint: "Herdsman prophet called from Tekoa", reference: "Amos 7:14" },
+            { word: "ezra", hint: "Scribe who led exiles home to Jerusalem", reference: "Ezra 7:10" },
+            { word: "esau", hint: "Sold his birthright for a meal", reference: "Genesis 25:33" },
+            { word: "jael", hint: "Tent-dweller who ended Sisera's tyranny", reference: "Judges 4:21" },
+            { word: "shem", hint: "Son of Noah in Abram's family line", reference: "Genesis 10:1" }
+        ],
+        places: [
+            { word: "eden", hint: "Garden where Adam and Eve dwelt with God", reference: "Genesis 2:15" },
+            { word: "gaza", hint: "Philistine stronghold whose gates Samson carried off", reference: "Judges 16:3" },
+            { word: "tyre", hint: "Phoenician port that supplied Solomon's cedar temple", reference: "1 Kings 9:11" },
+            { word: "zion", hint: "Fortress David captured, city of the great King", reference: "2 Samuel 5:7" },
+            { word: "moab", hint: "Nation descended from Lot, east of the Dead Sea", reference: "Ruth 1:1" },
+            { word: "edom", hint: "Red-hilled land of Esau's descendants", reference: "Genesis 36:1" },
+            { word: "cush", hint: "Land of Nimrod's kingdom, far south (KJV)", reference: "Numbers 12:1" },
+            { word: "zoan", hint: "Egyptian city where Moses did wonders (KJV)", reference: "Psalm 78:43" }
+        ],
+        animals: [
+            { word: "lion", hint: "The righteous are as bold as this", reference: "Proverbs 28:1" },
+            { word: "dove", hint: "Bird on which the Spirit visibly descended", reference: "Matthew 3:16" },
+            { word: "wolf", hint: "Shall dwell with the lamb in Isaiah's vision", reference: "Isaiah 11:6" },
+            { word: "goat", hint: "Scapegoat kind carrying sins away yearly", reference: "Leviticus 16:10" },
+            { word: "lamb", hint: "Of God, taking away the world's sin", reference: "John 1:29" },
+            { word: "oxen", hint: "Their presence makes the increase (KJV)", reference: "Proverbs 14:4" },
+            { word: "fish", hint: "Great one swallowed Jonah three days", reference: "Jonah 1:17" },
+            { word: "kite", hint: "Unclean bird of the hawk family (KJV)", reference: "Leviticus 11:14" },
+            { word: "hart", hint: "Pants after the water brooks (KJV)", reference: "Psalm 42:1" },
+            { word: "deer", hint: "Fallow kind among the clean game (KJV)", reference: "Deuteronomy 14:5" },
+            { word: "swan", hint: "Unclean waterfowl on Moses' bird list (KJV)", reference: "Leviticus 11:18" }
+        ],
+        things: [
+            { word: "vine", hint: "I am the true one; My Father the husbandman", reference: "John 15:1" },
+            { word: "seal", hint: "God set it on His Son, whom He sent (KJV)", reference: "John 6:27" },
+            { word: "horn", hint: "Of salvation raised up in David's house", reference: "Luke 1:69" },
+            { word: "book", hint: "Seven-sealed one only the Lamb could open", reference: "Revelation 5:1" },
+            { word: "well", hint: "Jacob's water hole where Jesus asked a drink", reference: "John 4:6" },
+            { word: "gate", hint: "Narrow one leading unto life", reference: "Matthew 7:14" },
+            { word: "rock", hint: "Spiritual one that followed Israel (KJV)", reference: "1 Corinthians 10:4" },
+            { word: "wine", hint: "Made from water at Cana's wedding", reference: "John 2:9" },
+            { word: "robe", hint: "Best one put on the returning prodigal", reference: "Luke 15:22" },
+            { word: "ring", hint: "Sign of sonship on the prodigal's hand", reference: "Luke 15:22" },
+            { word: "gold", hint: "Magi gift fit for a king", reference: "Matthew 2:11" },
+            { word: "salt", hint: "Have it in yourselves, Jesus said", reference: "Mark 9:50" },
+            { word: "yoke", hint: "His is easy and His burden light", reference: "Matthew 11:30" },
+            { word: "veil", hint: "Temple curtain torn in two at death", reference: "Mark 15:38" },
+            { word: "lamp", hint: "Unto my feet and light unto my path", reference: "Psalm 119:105" },
+            { word: "tent", hint: "Abraham sat at its door in the heat of day", reference: "Genesis 18:1" },
+            { word: "cord", hint: "Threefold one is not quickly broken", reference: "Ecclesiastes 4:12" },
+            { word: "fire", hint: "Pillar of it led Israel by night", reference: "Exodus 13:21" }
+        ],
+        events: [
+            { word: "fall", hint: "What came to man through Eden's fruit", reference: "Genesis 3:6" },
+            { word: "call", hint: "Young Samuel heard the Lord do this at night", reference: "1 Samuel 3:10" },
+            { word: "fast", hint: "Sanctify one, Joel told the people (KJV)", reference: "Joel 2:15" },
+            { word: "sign", hint: "What Jesus' miracles were called", reference: "John 2:11" },
+            { word: "rest", hint: "Remains for the people of God", reference: "Hebrews 4:9" },
+            { word: "rain", hint: "Forty days of it began the flood", reference: "Genesis 7:12" },
+            { word: "wind", hint: "Mighty rushing one filled Pentecost", reference: "Acts 2:2" },
+            { word: "hail", hint: "Seventh plague hammered Egypt's fields", reference: "Exodus 9:23" }
+        ],
+        concepts: [
+            { word: "hope", hint: "Anchor of the soul, sure and steadfast", reference: "Hebrews 6:19" },
+            { word: "love", hint: "God is ___", reference: "1 John 4:8" },
+            { word: "amen", hint: "So be it; closing word of the Lord's prayer", reference: "Matthew 6:13" },
+            { word: "holy", hint: "Be ye ___ , for I am holy", reference: "1 Peter 1:16" },
+            { word: "just", hint: "The ___ shall live by his faith", reference: "Habakkuk 2:4" },
+            { word: "wise", hint: "Builds on rock by hearing and doing", reference: "Matthew 7:24" },
+            { word: "poor", hint: "Blessed are the ___ in spirit", reference: "Matthew 5:3" },
+            { word: "meek", hint: "They shall inherit the earth", reference: "Matthew 5:5" },
+            { word: "pure", hint: "Blessed are the ___ in heart", reference: "Matthew 5:8" },
+            { word: "soul", hint: "What profits a man to lose his whole world for it", reference: "Mark 8:36" },
+            { word: "mind", hint: "Be transformed by its renewing", reference: "Romans 12:2" },
+            { word: "zeal", hint: "It consumed Me, written of Christ", reference: "John 2:17" },
+            { word: "deed", hint: "Word or ___, do all in His name", reference: "Colossians 3:17" },
+            { word: "good", hint: "Shepherd lays down His life for sheep", reference: "John 10:11" },
+            { word: "word", hint: "In the beginning was the ___", reference: "John 1:1" },
+            { word: "life", hint: "I am the resurrection and the ___", reference: "John 11:25" },
+            { word: "king", hint: "Title Pilate wrote over the cross", reference: "Matthew 27:37" },
+            { word: "lord", hint: "My ___ and my God, Thomas confessed", reference: "John 20:28" },
+            { word: "give", hint: "More blessed to do this than receive", reference: "Acts 20:35" },
+            { word: "born", hint: "Ye must be ___ again", reference: "John 3:7" }
+        ]
+    },
+
     // ==================== 5-LETTER WORDS ====================
     5: {
         people: [
@@ -476,7 +572,7 @@ export const getWordList = (wordLength, category) => {
 };
 
 export const GAME_CONFIG = {
-    wordLengths: [5, 6, 7],
+    wordLengths: [4, 5, 6, 7],
     categories: {
         all: "All",
         people: "People",

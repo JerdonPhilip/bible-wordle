@@ -3,6 +3,11 @@ import { X } from 'lucide-react';
 
 // Example rows adapt to the selected word length; words come from the game database
 const EXAMPLES_BY_LENGTH = {
+  4: [
+    { word: 'NOAH', hi: 0, status: 'correct', desc: 'N is in the word and in the right spot.' },
+    { word: 'EDEN', hi: 2, status: 'present', desc: 'E is in the word but in the wrong spot.' },
+    { word: 'HOPE', hi: 3, status: 'absent', desc: 'P is not in the word in any spot.' },
+  ],
   5: [
     { word: 'MOSES', hi: 0, status: 'correct', desc: 'M is in the word and in the right spot.' },
     { word: 'CROSS', hi: 1, status: 'present', desc: 'R is in the word but in the wrong spot.' },

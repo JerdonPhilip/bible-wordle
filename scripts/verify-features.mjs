@@ -62,8 +62,9 @@ for (const [length, categories] of Object.entries(BIBLE_WORDS)) {
 check('every entry matches its declared length', badLength === 0);
 check('every entry has hint + reference', missingMeta === 0);
 check('no duplicate words within any word length', dupes === 0);
-console.log(`  database: ${total} words | 5-letter: ${perLength[5]} | 6-letter: ${perLength[6]} | 7-letter: ${perLength[7]}`);
-check('database grew past 350 words', total > 350);
+console.log(`  database: ${total} words | 4-letter: ${perLength[4]} | 5-letter: ${perLength[5]} | 6-letter: ${perLength[6]} | 7-letter: ${perLength[7]}`);
+check('database grew past 450 words', total > 450);
+check('4-letter category has entries for all six', Object.keys(BIBLE_WORDS['4']).length === 6);
 
 // ===== Regression: prior features still pass =====
 const a1 = getDailyWordForDate(5, 'all', '2026-08-24');
@@ -86,6 +87,22 @@ check('new words validate in their categories', [
 ].every(Boolean));
 check('hard mode yellow reuse enforced', getHardModeViolation('txxxx', ['trefa'], 'faith') !== null);
 check('hard mode greens satisfied passes', getHardModeViolation('faxxx', ['faxel'], 'faith') === null);
+
+// 4-letter length works end to end
+const d4a = getDailyWordForDate(4, 'all', '2026-08-24');
+const d4b = getDailyWordForDate(4, 'all', '2026-08-24');
+check('4-letter daily deterministic with word + hint', JSON.stringify(d4a) === JSON.stringify(d4b) && !!d4a.word && !!d4a.hint && d4a.word.length === 4);
+const p4 = getDailyWord(4, 'concepts');
+check('practice 4-letter returns valid concept', !!p4?.word && p4.word.length === 4 && isValidBibleWord(p4.word, 4, 'concepts'));
+check('4-letter words validate in categories', [
+  isValidBibleWord('noah', 4, 'people'),
+  isValidBibleWord('eden', 4, 'places'),
+  isValidBibleWord('lamb', 4, 'animals'),
+  isValidBibleWord('lamp', 4, 'things'),
+  isValidBibleWord('hail', 4, 'events'),
+  isValidBibleWord('hope', 4, 'concepts'),
+].every(Boolean));
+check('invalid 4-letter word rejected', !isValidBibleWord('zzzz', 4, 'people'));
 
 console.log(failures === 0 ? '\nALL CHECKS PASSED' : `\n${failures} CHECKS FAILED`);
 process.exit(failures === 0 ? 0 : 1);
