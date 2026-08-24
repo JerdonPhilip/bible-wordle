@@ -411,6 +411,32 @@ button {
     display: none;
 }
 
+/* ===== CONFETTI ===== */
+
+.confetti-container {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -24px;
+    opacity: 0.95;
+    animation-name: confettiFall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(115vh) rotate(var(--spin, 360deg));
+        opacity: 0.7;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
     *,

@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getDailyWord, getDailyWordForDate, isValidBibleWord, getValidWordsForGame, dateKey, yesterdayKey } from '../utils/wordList';
 import { getVerseForWord } from '../utils/bibleApi';
+import { getHardModeViolation } from '../utils/hardMode';
 
 const MAX_GUESSES = 6;
 const STATS_KEY = 'bible-wordle-stats-v1';
 const MODE_KEY = 'bible-wordle-mode';
+const HARD_MODE_KEY = 'bible-wordle-hard-mode';
 
 const EMPTY_STATS = {
     played: 0,
@@ -27,6 +29,7 @@ const loadStats = () => {
 
 export function useBibleWordle() {
     const [mode, setMode] = useState(() => localStorage.getItem(MODE_KEY) || 'daily');
+    const [hardMode, setHardMode] = useState(() => localStorage.getItem(HARD_MODE_KEY) === 'true');
     const [dailyWord, setDailyWord] = useState(null);
     const [guesses, setGuesses] = useState([]);
     const [currentGuess, setCurrentGuess] = useState('');
@@ -134,6 +137,14 @@ export function useBibleWordle() {
             return;
         }
 
+        if (hardMode && guesses.length > 0) {
+            const violation = getHardModeViolation(currentGuess, guesses, dailyWord.word);
+            if (violation) {
+                fail(violation);
+                return;
+            }
+        }
+
         const newGuesses = [...guesses, currentGuess];
         setGuesses(newGuesses);
         updateUsedLetters(currentGuess);
@@ -146,7 +157,7 @@ export function useBibleWordle() {
         }
 
         setCurrentGuess('');
-    }, [currentGuess, dailyWord, guesses, gameOver, updateUsedLetters, wordLength, category]);
+    }, [currentGuess, dailyWord, guesses, gameOver, updateUsedLetters, wordLength, category, hardMode]);
 
     // Stats: record once per day for daily mode
     useEffect(() => {
@@ -222,6 +233,11 @@ export function useBibleWordle() {
         setMode(newMode);
     };
 
+    const changeHardMode = (enabled) => {
+        localStorage.setItem(HARD_MODE_KEY, String(enabled));
+        setHardMode(enabled);
+    };
+
     const resetStats = () => {
         const fresh = { ...EMPTY_STATS, dist: [...EMPTY_STATS.dist] };
         localStorage.setItem(STATS_KEY, JSON.stringify(fresh));
@@ -231,6 +247,8 @@ export function useBibleWordle() {
     return {
         mode,
         changeMode,
+        hardMode,
+        changeHardMode,
         dailyWord,
         guesses,
         currentGuess,

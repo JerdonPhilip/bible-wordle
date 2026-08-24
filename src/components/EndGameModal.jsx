@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Trophy, Frown, BookOpen, Lightbulb, Check, Share2, RotateCcw, Cross } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Trophy, Frown, BookOpen, Lightbulb, Check, Share2, RotateCcw, Cross, Quote } from 'lucide-react';
+import { getWordDefinition } from '../utils/dictionaryApi';
+import CountdownTimer from './CountdownTimer';
 
 export default function EndGameModal({
   open,
@@ -16,6 +18,26 @@ export default function EndGameModal({
   onPlayAgain,
 }) {
   const [copied, setCopied] = useState(false);
+  const [definition, setDefinition] = useState(null);
+  const [loadingDefinition, setLoadingDefinition] = useState(false);
+
+  // Fetch an English dictionary definition for the revealed word
+  useEffect(() => {
+    if (!open || !dailyWord?.word) return;
+    let cancelled = false;
+    setDefinition(null);
+    setLoadingDefinition(true);
+    getWordDefinition(dailyWord.word).then((def) => {
+      if (!cancelled) {
+        setDefinition(def);
+        setLoadingDefinition(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, dailyWord?.word]);
+
   if (!open) return null;
 
   const getStatus = (guess, pos) => {
@@ -80,6 +102,24 @@ export default function EndGameModal({
           </p>
         )}
 
+        {loadingDefinition ? (
+          <div className="mt-3 py-1.5" aria-busy="true">
+            <div className="h-3 rounded bg-gray-300/70 dark:bg-white/10 w-2/3 mx-auto animate-pulse" />
+          </div>
+        ) : definition?.definition ? (
+          <div className="mt-3 mx-auto max-w-sm glass rounded-xl px-3 py-2 animate-fade-in">
+            <p className="flex items-start justify-center gap-1.5 text-[13px] leading-snug text-gray-700 dark:text-gray-200">
+              <Quote size={12} strokeWidth={2.25} className="shrink-0 mt-0.5 text-blue-500 dark:text-blue-400" aria-hidden="true" />
+              <span className="text-left">
+                {definition.partOfSpeech && (
+                  <em className="text-[11px] text-gray-500 dark:text-gray-400 mr-1">{definition.partOfSpeech}.</em>
+                )}
+                {definition.definition}
+              </span>
+            </p>
+          </div>
+        ) : null}
+
         <div className="my-4 border-t border-gray-200 dark:border-white/10" />
 
         {loadingVerse ? (
@@ -128,6 +168,12 @@ export default function EndGameModal({
           <button type="button" onClick={onClose} className="block mx-auto mt-3 text-xs text-gray-500 dark:text-gray-400 underline underline-offset-2">
             View my board
           </button>
+        )}
+
+        {isDaily && (
+          <div className="mt-4 flex justify-center">
+            <CountdownTimer />
+          </div>
         )}
 
         <p className="flex items-center justify-center gap-1 text-[10px] text-gray-400 dark:text-white/30 mt-4">

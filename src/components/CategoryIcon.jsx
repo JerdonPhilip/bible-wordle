@@ -1,7 +1,8 @@
 import React from 'react';
-import { Users, MapPin, PawPrint, Package, CalendarDays, Lightbulb } from 'lucide-react';
+import { Users, MapPin, PawPrint, Package, CalendarDays, Lightbulb, Sparkles } from 'lucide-react';
 
 const CATEGORY_ICONS = {
+  all: Sparkles,
   people: Users,
   places: MapPin,
   animals: PawPrint,

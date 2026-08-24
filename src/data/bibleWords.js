@@ -328,7 +328,14 @@ export const BIBLE_WORDS = {
 
 // Helper functions
 export const getWordList = (wordLength, category) => {
-    if (!BIBLE_WORDS[wordLength] || !BIBLE_WORDS[wordLength][category]) {
+    if (!BIBLE_WORDS[wordLength]) {
+        return [];
+    }
+    // "all" pools every category for the given word length
+    if (category === 'all') {
+        return Object.keys(BIBLE_WORDS[wordLength]).flatMap(cat => BIBLE_WORDS[wordLength][cat]);
+    }
+    if (!BIBLE_WORDS[wordLength][category]) {
         return [];
     }
     return BIBLE_WORDS[wordLength][category];
@@ -349,6 +356,7 @@ export const getAllValidBibleWords = () => {
 export const GAME_CONFIG = {
     wordLengths: [5, 6, 7],
     categories: {
+        all: "All",
         people: "People",
         places: "Places",
         animals: "Animals",

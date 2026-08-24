@@ -9,6 +9,8 @@ import HelpModal from './components/HelpModal';
 import EndGameModal from './components/EndGameModal';
 import StatsModal from './components/StatsModal';
 import CategoryIcon from './components/CategoryIcon';
+import Confetti from './components/Confetti';
+import CountdownTimer from './components/CountdownTimer';
 import { useBibleWordle } from './hooks/useBibleWordle';
 import { useTheme } from './context/ThemeContext';
 
@@ -16,6 +18,8 @@ function App() {
   const {
     mode,
     changeMode,
+    hardMode,
+    changeHardMode,
     dailyWord,
     guesses,
     currentGuess,
@@ -128,6 +132,7 @@ function App() {
           {!gameOver && !gameWon && (
             <span className="chip cursor-default select-none">{attemptsLeft} {attemptsLeft === 1 ? 'try' : 'tries'} left</span>
           )}
+          {mode === 'daily' && (gameOver || gameWon) && <CountdownTimer label="Next in" />}
         </div>
 
         {/* Progressive hint banner */}
@@ -175,6 +180,7 @@ function App() {
 
       {/* ===== Overlays ===== */}
       <Toast message={errorMessage} onDone={clearError} />
+      <Confetti active={gameWon} />
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
       <StatsModal
         open={statsOpen}
@@ -191,6 +197,8 @@ function App() {
         selectedCategory={category}
         onLengthChange={(len) => { changeWordLength(len); setSettingsOpen(false); }}
         onCategoryChange={(cat) => { changeCategory(cat); setSettingsOpen(false); }}
+        hardMode={hardMode}
+        onHardModeChange={(enabled) => changeHardMode(enabled)}
       />
       <EndGameModal
         open={endModalOpen && !dismissedEnd}
