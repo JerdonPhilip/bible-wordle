@@ -118,13 +118,11 @@ export const BIBLE_WORDS = {
             { word: "grace", hint: "Unmerited favor from God", reference: "Ephesians 2:8" },
             { word: "honor", hint: "Respect owed especially to God and parents", reference: "Exodus 20:12" },
             { word: "light", hint: "Jesus said 'I am the ___ of the world'", reference: "John 8:12" },
-            { word: "bread", hint: "Jesus called Himself the living ___ from heaven", reference: "John 6:51" },
             { word: "mercy", hint: "Compassion shown to the undeserving", reference: "Psalm 103:8" },
             { word: "peace", hint: "Shalom, left by Jesus to disciples", reference: "John 14:27" },
             { word: "trust", hint: "Firm reliance on God's character and promises", reference: "Proverbs 3:5" },
             { word: "truth", hint: "Jesus is full of grace and this (John 1:14)", reference: "John 1:14" },
             { word: "unity", hint: "Believers dwelling together as one, prized in Psalm 133", reference: "Psalm 133:1" },
-            { word: "water", hint: "Living ___ Jesus offered the Samaritan woman", reference: "John 4:14" },
             { word: "wrath", hint: "Divine anger revealed against ungodliness", reference: "Romans 1:18" }
         ]
     },

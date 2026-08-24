@@ -1,21 +1,21 @@
 import { getWordList, getAllValidBibleWords, GAME_CONFIG } from '../data/bibleWords';
 
 // ---------- Date helpers ----------
-const PUZZLE_EPOCH = new Date(2024, 0, 1); // Jan 1 2024 = puzzle #1
+// All daily-rotation math is UTC so every player worldwide gets the same
+// word on the same calendar day. Puzzle #1 = Jan 1 2024 (UTC).
+const PUZZLE_EPOCH_MS = Date.UTC(2024, 0, 1);
+const DAY_MS = 86400000;
 
 export function dateKey(d = new Date()) {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
+    return d.toISOString().slice(0, 10);
 }
 
 export function yesterdayKey() {
-    return dateKey(new Date(Date.now() - 86400000));
+    return dateKey(new Date(Date.now() - DAY_MS));
 }
 
 export function getPuzzleNumber(d = new Date()) {
-    return Math.max(1, Math.floor((d - PUZZLE_EPOCH) / 86400000) + 1);
+    return Math.max(1, Math.floor((d.getTime() - PUZZLE_EPOCH_MS) / DAY_MS) + 1);
 }
 
 // FNV-1a string hash → 32-bit uint

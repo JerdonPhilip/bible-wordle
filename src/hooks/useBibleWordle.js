@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { getDailyWord, getDailyWordForDate, isValidBibleWord, getValidWordsForGame, dateKey, yesterdayKey } from '../utils/wordList';
+import { getDailyWord, getDailyWordForDate, isValidBibleWord, getValidWordsForGame, dateKey, yesterdayKey, getPuzzleNumber } from '../utils/wordList';
 import { getVerseForWord } from '../utils/bibleApi';
 import { getHardModeViolation } from '../utils/hardMode';
+import { scoreGuess, mergeKeyboardState } from '../utils/wordScoring';
 
 const MAX_GUESSES = 6;
 const STATS_KEY = 'bible-wordle-stats-v1';
@@ -90,23 +91,7 @@ export function useBibleWordle() {
     };
 
     const updateUsedLetters = useCallback((guess) => {
-        setUsedLetters(prev => {
-            const next = {
-                correct: new Set(prev.correct),
-                present: new Set(prev.present),
-                absent: new Set(prev.absent)
-            };
-            guess.split('').forEach((letter, idx) => {
-                if (dailyWord.word[idx] === letter) {
-                    next.correct.add(letter);
-                } else if (dailyWord.word.includes(letter)) {
-                    next.present.add(letter);
-                } else {
-                    next.absent.add(letter);
-                }
-            });
-            return next;
-        });
+        setUsedLetters(prev => mergeKeyboardState(prev, guess, scoreGuess(guess, dailyWord.word)));
     }, [dailyWord]);
 
     const fail = (message) => {
@@ -268,7 +253,7 @@ export function useBibleWordle() {
         resetGame,
         resetStats,
         stats,
-        puzzleNumber: dailyWord ? Math.max(1, Math.floor((new Date() - new Date(2024, 0, 1)) / 86400000) + 1) : null,
+        puzzleNumber: dailyWord ? getPuzzleNumber() : null,
         changeWordLength,
         changeCategory,
         MAX_GUESSES

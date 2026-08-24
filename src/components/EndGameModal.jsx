@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Trophy, Frown, BookOpen, Lightbulb, Check, Share2, RotateCcw, Cross, Quote } from 'lucide-react';
 import { getWordDefinition } from '../utils/dictionaryApi';
+import { scoreGuess } from '../utils/wordScoring';
 import CountdownTimer from './CountdownTimer';
 
 export default function EndGameModal({
@@ -40,17 +41,13 @@ export default function EndGameModal({
 
   if (!open) return null;
 
-  const getStatus = (guess, pos) => {
-    if (dailyWord.word[pos] === guess[pos]) return 'correct';
-    if (dailyWord.word.includes(guess[pos])) return 'present';
-    return 'absent';
-  };
+  const getStatuses = (guess) => scoreGuess(guess, dailyWord.word);
 
   const EMOJI = { correct: '🟩', present: '🟨', absent: '⬛' };
 
   const shareText = () => {
     const grid = guesses
-      .map((g) => g.split('').map((_, i) => EMOJI[getStatus(g, i)]).join(''))
+      .map((g) => getStatuses(g).map((s) => EMOJI[s]).join(''))
       .join('\n');
     const scoreline = gameWon
       ? `${guesses.length}/6`

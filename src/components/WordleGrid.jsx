@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { scoreGuess } from '../utils/wordScoring';
 
 export default function WordleGrid({ guesses, currentGuess, wordLength, maxGuesses, dailyWord, gameWon, shakeKey }) {
   const [shaking, setShaking] = useState(false);
 
-  const getLetterStatus = (guess, position) => {
-    if (!dailyWord) return 'empty';
-    const letter = guess[position];
-    if (!letter) return 'empty';
-    if (dailyWord.word[position] === letter) return 'correct';
-    if (dailyWord.word.includes(letter)) return 'present';
-    return 'absent';
-  };
+  const getStatuses = (guess) => (
+    dailyWord ? scoreGuess(guess, dailyWord.word) : Array(guess.length).fill('empty')
+  );
 
   useEffect(() => {
     if (!shakeKey) return;
@@ -33,6 +29,7 @@ export default function WordleGrid({ guesses, currentGuess, wordLength, maxGuess
     <div className="board mx-auto" style={{ '--cols': wordLength }}>
       {guesses.map((guess, idx) => {
         const isNewest = idx === newestRow;
+        const statuses = getStatuses(guess);
         return (
           <div
             key={idx}
@@ -40,7 +37,7 @@ export default function WordleGrid({ guesses, currentGuess, wordLength, maxGuess
             style={gameWon && isNewest ? { animationDelay: `${wordLength * 140 + 250}ms` } : undefined}
           >
             {guess.split('').map((letter, pos) => {
-              const status = getLetterStatus(guess, pos);
+              const status = statuses[pos] || 'empty';
               const revealDelay = isNewest ? `${pos * 140}ms` : undefined;
               return (
                 <div

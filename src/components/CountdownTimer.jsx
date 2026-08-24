@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Timer } from 'lucide-react';
 
+// Daily word rotates at UTC midnight — match the countdown to that moment
 function msUntilNextMidnight() {
-  const next = new Date();
-  next.setHours(24, 0, 0, 0);
-  return Math.max(0, next.getTime() - Date.now());
+  const now = new Date();
+  const nextUtcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1);
+  return Math.max(0, nextUtcMidnight - now.getTime());
 }
 
 function formatDuration(ms) {
