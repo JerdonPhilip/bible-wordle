@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BookOpen, Lightbulb, ChevronDown, HelpCircle, Settings, BarChart3 } from 'lucide-react';
+import { BookOpen, Lightbulb, ChevronDown, HelpCircle, Settings, BarChart3, Eye } from 'lucide-react';
 import WordleGrid from './components/WordleGrid';
 import Keyboard from './components/Keyboard';
 import SettingsSheet from './components/SettingsSheet';
@@ -14,6 +14,8 @@ import CountdownTimer from './components/CountdownTimer';
 import { useBibleWordle } from './hooks/useBibleWordle';
 import { useTheme } from './context/ThemeContext';
 
+const SEEN_HELP_KEY = 'bible-wordle-seen-help';
+
 function App() {
   const {
     mode,
@@ -25,6 +27,8 @@ function App() {
     currentGuess,
     gameOver,
     gameWon,
+    revealed,
+    revealAnswer,
     verseData,
     loadingVerse,
     usedLetters,
@@ -46,10 +50,15 @@ function App() {
 
   const { theme } = useTheme();
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [helpOpen, setHelpOpen] = useState(false);
+  // First-time users get the tutorial automatically
+  const [helpOpen, setHelpOpen] = useState(() => !localStorage.getItem(SEEN_HELP_KEY));
   const [statsOpen, setStatsOpen] = useState(false);
   const [endModalOpen, setEndModalOpen] = useState(false);
   const [dismissedEnd, setDismissedEnd] = useState(false);
+
+  useEffect(() => {
+    try { localStorage.setItem(SEEN_HELP_KEY, 'true'); } catch { /* storage unavailable */ }
+  }, []);
 
   // Open results modal after the final row finishes revealing
   useEffect(() => {
@@ -132,6 +141,12 @@ function App() {
           {!gameOver && !gameWon && (
             <span className="chip cursor-default select-none">{attemptsLeft} {attemptsLeft === 1 ? 'try' : 'tries'} left</span>
           )}
+          {mode === 'practice' && !gameOver && !gameWon && (
+            <button type="button" className="chip" onClick={revealAnswer} aria-label="Reveal the answer">
+              <Eye size={13} strokeWidth={2.25} aria-hidden="true" />
+              Reveal answer
+            </button>
+          )}
           {mode === 'daily' && (gameOver || gameWon) && <CountdownTimer label="Next in" />}
         </div>
 
@@ -156,6 +171,7 @@ function App() {
               dailyWord={dailyWord}
               gameWon={gameWon}
               shakeKey={shakeKey}
+              revealed={revealed}
             />
           </div>
         </div>
@@ -181,7 +197,7 @@ function App() {
       {/* ===== Overlays ===== */}
       <Toast message={errorMessage} onDone={clearError} />
       <Confetti active={gameWon} />
-      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
+      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} wordLength={wordLength} />
       <StatsModal
         open={statsOpen}
         stats={stats}
@@ -211,6 +227,8 @@ function App() {
         isDaily={mode === 'daily'}
         puzzleNumber={puzzleNumber}
         streak={stats.curStreak}
+        maxStreak={stats.maxStreak}
+        revealed={revealed}
         onClose={() => { setEndModalOpen(false); setDismissedEnd(true); }}
         onPlayAgain={() => { setEndModalOpen(false); resetGame(); }}
       />

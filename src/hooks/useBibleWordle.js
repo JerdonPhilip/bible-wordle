@@ -36,6 +36,7 @@ export function useBibleWordle() {
     const [currentGuess, setCurrentGuess] = useState('');
     const [gameOver, setGameOver] = useState(false);
     const [gameWon, setGameWon] = useState(false);
+    const [revealed, setRevealed] = useState(false);
     const [verseData, setVerseData] = useState(null);
     const [loadingVerse, setLoadingVerse] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -72,6 +73,7 @@ export function useBibleWordle() {
         setCurrentGuess('');
         setGameOver(false);
         setGameWon(false);
+        setRevealed(false);
         setErrorMessage('');
         setUsedLetters({ correct: new Set(), present: new Set(), absent: new Set() });
 
@@ -218,6 +220,13 @@ export function useBibleWordle() {
         setMode(newMode);
     };
 
+    // Practice-mode only: quit and reveal the answer without a win
+    const revealAnswer = () => {
+        if (mode !== 'practice' || gameOver || gameWon || !dailyWord) return;
+        setRevealed(true);
+        setGameOver(true);
+    };
+
     const changeHardMode = (enabled) => {
         localStorage.setItem(HARD_MODE_KEY, String(enabled));
         setHardMode(enabled);
@@ -239,6 +248,8 @@ export function useBibleWordle() {
         currentGuess,
         gameOver,
         gameWon,
+        revealed,
+        revealAnswer,
         verseData,
         loadingVerse,
         usedLetters,

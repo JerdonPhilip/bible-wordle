@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Trophy, Frown, BookOpen, Lightbulb, Check, Share2, RotateCcw, Cross, Quote } from 'lucide-react';
+import { Trophy, Frown, BookOpen, Lightbulb, Check, Share2, RotateCcw, Cross, Quote, Eye, Flame } from 'lucide-react';
 import { getWordDefinition } from '../utils/dictionaryApi';
 import { scoreGuess } from '../utils/wordScoring';
 import CountdownTimer from './CountdownTimer';
@@ -15,6 +15,8 @@ export default function EndGameModal({
   isDaily,
   puzzleNumber,
   streak,
+  maxStreak,
+  revealed,
   onClose,
   onPlayAgain,
 }) {
@@ -79,14 +81,29 @@ export default function EndGameModal({
           className={`mx-auto mb-2 w-14 h-14 rounded-2xl flex items-center justify-center ${
             gameWon
               ? 'bg-emerald-500/15 text-emerald-500'
-              : 'bg-red-500/15 text-red-500'
+              : revealed
+                ? 'bg-blue-500/15 text-blue-500'
+                : 'bg-red-500/15 text-red-500'
           }`}
         >
-          {gameWon ? <Trophy size={30} strokeWidth={2} /> : <Frown size={30} strokeWidth={2} />}
+          {gameWon ? (
+            <Trophy size={30} strokeWidth={2} />
+          ) : revealed ? (
+            <Eye size={30} strokeWidth={2} />
+          ) : (
+            <Frown size={30} strokeWidth={2} />
+          )}
         </div>
-        <h2 className={`text-xl font-extrabold font-display ${gameWon ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
-          {gameWon ? 'Blessed! You got it!' : 'Out of tries'}
+        <h2 className={`text-xl font-extrabold font-display ${gameWon ? 'text-emerald-600 dark:text-emerald-400' : revealed ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>
+          {gameWon ? 'Blessed! You got it!' : revealed ? 'Answer revealed' : 'Out of tries'}
         </h2>
+
+        {gameWon && isDaily && streak > 1 && (
+          <div className="mt-3 mx-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-400/40 text-orange-600 dark:text-orange-300 text-xs font-bold animate-fade-in">
+            <Flame size={13} strokeWidth={2.5} aria-hidden="true" />
+            {streak}-day streak{streak >= maxStreak ? ' · new record!' : ''}
+          </div>
+        )}
 
         <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">The word was</p>
         <p className="text-3xl font-extrabold tracking-widest uppercase text-blue-600 dark:text-blue-400">

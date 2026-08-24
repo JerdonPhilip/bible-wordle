@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { scoreGuess } from '../utils/wordScoring';
 
-export default function WordleGrid({ guesses, currentGuess, wordLength, maxGuesses, dailyWord, gameWon, shakeKey }) {
+export default function WordleGrid({ guesses, currentGuess, wordLength, maxGuesses, dailyWord, gameWon, shakeKey, revealed }) {
   const [shaking, setShaking] = useState(false);
 
   const getStatuses = (guess) => (
@@ -53,8 +53,23 @@ export default function WordleGrid({ guesses, currentGuess, wordLength, maxGuess
         );
       })}
 
+      {/* Revealed answer row (practice mode "reveal answer") */}
+      {revealed && dailyWord && (
+        <div className="board-row">
+          {dailyWord.word.split('').map((letter, pos) => (
+            <div
+              key={pos}
+              className="tile tile-revealed tile-flip"
+              style={{ animationDelay: `${pos * 140}ms` }}
+            >
+              {letter}
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Active input row */}
-      {guesses.length < maxGuesses && (
+      {guesses.length < maxGuesses && !revealed && (
         <div className={`board-row ${shaking ? 'row-shake' : ''}`} onAnimationEnd={() => setShaking(false)}>
           {Array(wordLength).fill(0).map((_, pos) => {
             const letter = currentGuess[pos];

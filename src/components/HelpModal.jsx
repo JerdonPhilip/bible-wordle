@@ -1,11 +1,24 @@
 import React from 'react';
 import { X } from 'lucide-react';
 
-const EXAMPLES = [
-  { word: 'FAITH', hi: 0, status: 'correct', desc: 'F is in the word and in the right spot.' },
-  { word: 'MOSES', hi: 1, status: 'present', desc: 'O is in the word but in the wrong spot.' },
-  { word: 'CROSS', hi: 2, status: 'absent', desc: 'R is not in the word in any spot.' },
-];
+// Example rows adapt to the selected word length; words come from the game database
+const EXAMPLES_BY_LENGTH = {
+  5: [
+    { word: 'MOSES', hi: 0, status: 'correct', desc: 'M is in the word and in the right spot.' },
+    { word: 'CROSS', hi: 1, status: 'present', desc: 'R is in the word but in the wrong spot.' },
+    { word: 'FAITH', hi: 2, status: 'absent', desc: 'I is not in the word in any spot.' },
+  ],
+  6: [
+    { word: 'SAMUEL', hi: 0, status: 'correct', desc: 'S is in the word and in the right spot.' },
+    { word: 'PRAYER', hi: 1, status: 'present', desc: 'R is in the word but in the wrong spot.' },
+    { word: 'GOSPEL', hi: 3, status: 'absent', desc: 'P is not in the word in any spot.' },
+  ],
+  7: [
+    { word: 'MIRACLE', hi: 0, status: 'correct', desc: 'M is in the word and in the right spot.' },
+    { word: 'PARABLE', hi: 1, status: 'present', desc: 'A is in the word but in the wrong spot.' },
+    { word: 'TRIUMPH', hi: 2, status: 'absent', desc: 'I is not in the word in any spot.' },
+  ],
+};
 
 const STATUS_CLASS = {
   correct: 'tile-correct',
@@ -13,8 +26,9 @@ const STATUS_CLASS = {
   absent: 'tile-absent',
 };
 
-export default function HelpModal({ open, onClose }) {
+export default function HelpModal({ open, onClose, wordLength = 5 }) {
   if (!open) return null;
+  const EXAMPLES = EXAMPLES_BY_LENGTH[wordLength] || EXAMPLES_BY_LENGTH[5];
 
   return (
     <>
@@ -34,7 +48,7 @@ export default function HelpModal({ open, onClose }) {
         <div className="space-y-3 mb-2">
           {EXAMPLES.map(({ word, hi, status, desc }) => (
             <div key={word} className="flex items-center gap-3">
-              <div className="board-row demo-board shrink-0" style={{ '--cols': 5, maxWidth: '150px' }}>
+              <div className="board-row demo-board shrink-0" style={{ '--cols': wordLength, maxWidth: '210px' }}>
                 {word.split('').map((letter, i) => (
                   <div
                     key={i}

@@ -318,6 +318,11 @@ button {
     @apply bg-gray-300/80 dark:bg-white/[0.04] border-transparent text-gray-400 dark:text-white/25 shadow-none;
 }
 
+/* Revealed answer tile (practice mode) */
+.tile-revealed {
+    @apply bg-blue-500 border-transparent text-white;
+}
+
 /* ===== OVERLAYS (sheet / modal / toast) ===== */
 
 .overlay-backdrop {

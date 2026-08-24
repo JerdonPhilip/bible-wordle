@@ -41,18 +41,29 @@ const instA = getDailyWordForDate(5, 'people', '2026-08-24');
 const instB = getDailyWordForDate(5, 'people', dateKey(new Date(Date.UTC(2026, 7, 24, 12))));
 check('daily word keyed by UTC date string only', JSON.stringify(instA) === JSON.stringify(instB));
 
-// ===== Section 1: no cross-category duplicates remain =====
-let dupesFound = 0;
-for (const categories of Object.values(BIBLE_WORDS)) {
+// ===== Section 2: word database integrity =====
+let badLength = 0, missingMeta = 0, dupes = 0, total = 0;
+const perLength = {};
+for (const [length, categories] of Object.entries(BIBLE_WORDS)) {
+  perLength[length] = 0;
   const seen = new Set();
   for (const entries of Object.values(categories)) {
     for (const e of entries) {
-      if (seen.has(e.word)) dupesFound++;
+      total++;
+      perLength[length]++;
+      if (e.word.length !== Number(length)) { badLength++; console.log(`BAD LENGTH: ${e.word} in ${length}`); }
+      if (!e.hint || !e.reference) { missingMeta++; console.log(`MISSING META: ${e.word}`); }
+      if (!/^[a-z]+$/.test(e.word)) { console.log(`BAD FORMAT: ${e.word}`); }
+      if (seen.has(e.word)) { dupes++; console.log(`DUPE: ${e.word} (${length})`); }
       seen.add(e.word);
     }
   }
 }
-check('no duplicate words within any word length', dupesFound === 0);
+check('every entry matches its declared length', badLength === 0);
+check('every entry has hint + reference', missingMeta === 0);
+check('no duplicate words within any word length', dupes === 0);
+console.log(`  database: ${total} words | 5-letter: ${perLength[5]} | 6-letter: ${perLength[6]} | 7-letter: ${perLength[7]}`);
+check('database grew past 350 words', total > 350);
 
 // ===== Regression: prior features still pass =====
 const a1 = getDailyWordForDate(5, 'all', '2026-08-24');
@@ -62,6 +73,17 @@ check("valid 'all' word passes", isValidBibleWord('david', 5, 'all') === true);
 check("bread valid in things, invalid in concepts", isValidBibleWord('bread', 5, 'things') && !isValidBibleWord('bread', 5, 'concepts'));
 const p = getDailyWord(7, 'all');
 check('practice all returns 7-letter word', !!p?.word && p.word.length === 7);
+
+// new Section 2 words resolve via validation
+check('new words validate in their categories', [
+  isValidBibleWord('pharaoh', 7, 'people'),
+  isValidBibleWord('unicorn', 7, 'animals'),
+  isValidBibleWord('servant', 7, 'concepts'),
+  isValidBibleWord('dathan', 6, 'people'),
+  isValidBibleWord('ziklag', 6, 'places'),
+  isValidBibleWord('myrrh', 5, 'things'),
+  isValidBibleWord('sower', 5, 'events'),
+].every(Boolean));
 check('hard mode yellow reuse enforced', getHardModeViolation('txxxx', ['trefa'], 'faith') !== null);
 check('hard mode greens satisfied passes', getHardModeViolation('faxxx', ['faxel'], 'faith') === null);
 

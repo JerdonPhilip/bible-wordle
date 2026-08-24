@@ -40,7 +40,21 @@ export const BIBLE_WORDS = {
             { word: "silas", hint: "Missionary companion of Paul, jailed at Philippi", reference: "Acts 16:25" },
             { word: "simon", hint: "Original name of Peter; also a Zealot disciple", reference: "John 1:42" },
             { word: "tamar", hint: "Daughter-in-law of Judah, mother of Perez and Zerah", reference: "Genesis 38:6" },
-            { word: "titus", hint: "Companion of Paul, recipient of an epistle", reference: "Titus 1:4" }
+            { word: "titus", hint: "Companion of Paul, recipient of an epistle", reference: "Titus 1:4" },
+            { word: "annas", hint: "Former high priest who first questioned Jesus", reference: "John 18:13" },
+            { word: "balak", hint: "King of Moab who hired Balaam to curse Israel", reference: "Numbers 22:6" },
+            { word: "elias", hint: "KJV form of Elijah, promised to come in spirit", reference: "Luke 1:17" },
+            { word: "felix", hint: "Governor who trembled at Paul's preaching", reference: "Acts 24:25" },
+            { word: "gaius", hint: "Beloved host whom Paul greets in Romans", reference: "Romans 16:23" },
+            { word: "herod", hint: "King who sought to kill baby Jesus", reference: "Matthew 2:13" },
+            { word: "hosea", hint: "Prophet told to marry Gomer as a living sign", reference: "Hosea 1:2" },
+            { word: "joses", hint: "Levite surnamed Barnabas, son of consolation", reference: "Acts 4:36" },
+            { word: "korah", hint: "Rebel swallowed up by the earth for opposing Moses", reference: "Numbers 16:32" },
+            { word: "micah", hint: "Prophet who foretold Bethlehem as Messiah's birthplace", reference: "Micah 5:2" },
+            { word: "nahor", hint: "Brother of Abraham who settled in Mesopotamia", reference: "Genesis 11:29" },
+            { word: "satan", hint: "The accuser who stood against Job", reference: "Job 1:6" },
+            { word: "terah", hint: "Father of Abram, left Ur for Haran", reference: "Genesis 11:31" },
+            { word: "zenas", hint: "Christian lawyer among Paul's helpers", reference: "Titus 3:13" }
         ],
         places: [
             { word: "egypt", hint: "Land where Israelites were slaves", reference: "Exodus 12:51" },
@@ -56,7 +70,15 @@ export const BIBLE_WORDS = {
             { word: "salem", hint: "City of Melchizedek, early name for Jerusalem", reference: "Genesis 14:18" },
             { word: "sidon", hint: "Ancient Phoenician port, often paired with Tyre", reference: "Genesis 10:15" },
             { word: "sinai", hint: "Mountain where Moses received the Law", reference: "Exodus 19:20" },
-            { word: "sodom", hint: "City of the plain, destroyed for its sin", reference: "Genesis 19:24" }
+            { word: "sodom", hint: "City of the plain, destroyed for its sin", reference: "Genesis 19:24" },
+            { word: "berea", hint: "Macedonian city of fair-minded Bible searchers", reference: "Acts 17:11" },
+            { word: "debir", hint: "Canaanite city won by Othniel for Caleb's daughter", reference: "Joshua 15:16" },
+            { word: "endor", hint: "Where Saul consulted the medium at night", reference: "1 Samuel 28:7" },
+            { word: "media", hint: "Kingdom paired with Persia in Daniel's day", reference: "Daniel 5:28" },
+            { word: "mizar", hint: "Little hill remembered by a downcast psalmist", reference: "Psalm 42:6" },
+            { word: "paran", hint: "Wilderness from which the twelve spies set out", reference: "Numbers 13:3" },
+            { word: "sinim", hint: "Far-off land in Isaiah's gathering promise (KJV)", reference: "Isaiah 49:12" },
+            { word: "troas", hint: "Coastal city where Paul saw the Macedonian vision", reference: "Acts 16:8" }
         ],
         animals: [
             { word: "camel", hint: "Ship of the desert, eye-of-the-needle fame", reference: "Matthew 19:24" },
@@ -73,7 +95,9 @@ export const BIBLE_WORDS = {
             { word: "stork", hint: "Unclean bird that faithfully tends its young", reference: "Jeremiah 8:7" },
             { word: "swine", hint: "Unclean animal the prodigal son fed", reference: "Luke 15:16" },
             { word: "viper", hint: "Poisonous snake John the Baptist called his hearers", reference: "Acts 28:3" },
-            { word: "whale", hint: "Great fish sign Jesus likened to His burial", reference: "Matthew 12:40" }
+            { word: "whale", hint: "Great fish sign Jesus likened to His burial", reference: "Matthew 12:40" },
+            { word: "frogs", hint: "Plague creatures hopping into ovens and kneading bowls", reference: "Exodus 8:6" },
+            { word: "leech", hint: "Bloodsucker with two daughters crying Give, give", reference: "Proverbs 30:15" }
         ],
         things: [
             { word: "altar", hint: "Place of sacrifice, built by Noah, Abraham, etc.", reference: "Genesis 8:20" },
@@ -98,7 +122,20 @@ export const BIBLE_WORDS = {
             { word: "sword", hint: "Weapon Peter swung in Gethsemane", reference: "Matthew 26:51" },
             { word: "tunic", hint: "Seamless garment gambled for by soldiers", reference: "John 19:23" },
             { word: "wheat", hint: "Grain of harvest fields, ground for bread", reference: "John 12:24" },
-            { word: "water", hint: "Essential for life, picture of cleansing and baptism", reference: "Revelation 22:17" }
+            { word: "water", hint: "Essential for life, picture of cleansing and baptism", reference: "Revelation 22:17" },
+            { word: "aloes", hint: "Perfume Nicodemus brought by the hundred pounds", reference: "John 19:39" },
+            { word: "amber", hint: "Glowing color of Ezekiel's visions (KJV)", reference: "Ezekiel 1:4" },
+            { word: "basin", hint: "Vessel of foot-washing water (KJV: bason)", reference: "John 13:5" },
+            { word: "cruse", hint: "Small jar holding the widow's last oil (KJV)", reference: "1 Kings 17:12" },
+            { word: "flour", hint: "Widow of Zarephath's never-failing supply (KJV)", reference: "1 Kings 17:14" },
+            { word: "honey", hint: "What flowed with milk in the promised land", reference: "Exodus 3:8" },
+            { word: "lamps", hint: "Ten virgins carried these to meet the bridegroom", reference: "Matthew 25:3" },
+            { word: "myrrh", hint: "Gift of the Magi, embalming spice", reference: "Matthew 2:11" },
+            { word: "nails", hint: "Fasteners Thomas demanded to see", reference: "John 20:25" },
+            { word: "pearl", hint: "One gate of the New Jerusalem was a single one", reference: "Revelation 21:21" },
+            { word: "penny", hint: "Day laborer's wage in the vineyard parable (KJV)", reference: "Matthew 20:2" },
+            { word: "torch", hint: "Light hidden inside Gideon's smashed pitchers", reference: "Judges 7:20" },
+            { word: "towel", hint: "Jesus girded Himself with one to wash feet", reference: "John 13:5" }
         ],
         events: [
             { word: "birth", hint: "Birth of Jesus in Bethlehem", reference: "Luke 2:7" },
@@ -110,7 +147,10 @@ export const BIBLE_WORDS = {
             { word: "quake", hint: "Earthquake when Jesus died; shook open a prison for Paul", reference: "Matthew 27:51" },
             { word: "siege", hint: "Army encirclement of a city, as Jerusalem endured", reference: "2 Kings 25:2" },
             { word: "storm", hint: "Tempestuous weather, as in the story of Jonah", reference: "Jonah 1:4" },
-            { word: "trial", hint: "Legal hearing Jesus faced before Caiaphas", reference: "Matthew 26:57" }
+            { word: "trial", hint: "Legal hearing Jesus faced before Caiaphas", reference: "Matthew 26:57" },
+            { word: "dance", hint: "What Miriam led the women in after the Red Sea", reference: "Exodus 15:20" },
+            { word: "sower", hint: "Parable farmer scattering seed on four soils", reference: "Matthew 13:3" },
+            { word: "watch", hint: "Night division when the master may come (KJV)", reference: "Mark 13:35" }
         ],
         concepts: [
             { word: "faith", hint: "Belief and trust in God", reference: "Hebrews 11:1" },
@@ -123,7 +163,19 @@ export const BIBLE_WORDS = {
             { word: "trust", hint: "Firm reliance on God's character and promises", reference: "Proverbs 3:5" },
             { word: "truth", hint: "Jesus is full of grace and this (John 1:14)", reference: "John 1:14" },
             { word: "unity", hint: "Believers dwelling together as one, prized in Psalm 133", reference: "Psalm 133:1" },
-            { word: "wrath", hint: "Divine anger revealed against ungodliness", reference: "Romans 1:18" }
+            { word: "wrath", hint: "Divine anger revealed against ungodliness", reference: "Romans 1:18" },
+            { word: "bless", hint: "Do this to them that curse you", reference: "Luke 6:28" },
+            { word: "curse", hint: "Christ was made one for us, redeeming us", reference: "Galatians 3:13" },
+            { word: "flesh", hint: "The Word became this and dwelt among us", reference: "John 1:14" },
+            { word: "fruit", hint: "Love, joy, peace head the Spirit's list", reference: "Galatians 5:22" },
+            { word: "gifts", hint: "Diversities of them, same Spirit (KJV)", reference: "1 Corinthians 12:4" },
+            { word: "heart", hint: "Keep it with all diligence", reference: "Proverbs 4:23" },
+            { word: "oaths", hint: "Swear not at all, Jesus taught (KJV)", reference: "Matthew 5:33" },
+            { word: "power", hint: "Ye shall receive after the Holy Ghost comes on you", reference: "Acts 1:8" },
+            { word: "sleep", hint: "Euphemism Jesus used before raising Lazarus", reference: "John 11:11" },
+            { word: "souls", hint: "Eight of them saved in the ark", reference: "1 Peter 3:20" },
+            { word: "tithe", hint: "Tenth brought to the storehouse in Malachi's test", reference: "Malachi 3:10" },
+            { word: "works", hint: "Faith without them is dead", reference: "James 2:20" }
         ]
     },
 
@@ -152,7 +204,16 @@ export const BIBLE_WORDS = {
             { word: "rachel", hint: "Mother of Joseph and Benjamin, wife of Jacob", reference: "Genesis 30:24" },
             { word: "samuel", hint: "Prophet who anointed both Saul and David", reference: "1 Samuel 3:10" },
             { word: "simeon", hint: "Righteous man who blessed baby Jesus in the temple", reference: "Luke 2:28" },
-            { word: "thomas", hint: "Disciple who doubted until he saw Jesus' wounds", reference: "John 20:27" }
+            { word: "thomas", hint: "Disciple who doubted until he saw Jesus' wounds", reference: "John 20:27" },
+            { word: "aquila", hint: "Tentmaking Christian who hosted a church", reference: "Acts 18:2" },
+            { word: "balaam", hint: "Prophet rebuked by his own talking donkey", reference: "Numbers 22:28" },
+            { word: "caesar", hint: "Ruler whose image was on the tribute coin", reference: "Matthew 22:20" },
+            { word: "dathan", hint: "Fellow rebel swallowed up beside Korah", reference: "Numbers 26:9" },
+            { word: "dorcas", hint: "Tabitha's Greek name; raised by Peter", reference: "Acts 9:36" },
+            { word: "jairus", hint: "Synagogue ruler whose daughter Jesus raised", reference: "Mark 5:22" },
+            { word: "manaen", hint: "Court-raised teacher in the Antioch church", reference: "Acts 13:1" },
+            { word: "nimrod", hint: "Mighty hunter before the LORD, Babel's founder", reference: "Genesis 10:9" },
+            { word: "pilate", hint: "Judge who washed his hands of Jesus' blood", reference: "Matthew 27:24" }
         ],
         places: [
             { word: "arabia", hint: "Where Paul went after his conversion", reference: "Galatians 1:17" },
@@ -168,7 +229,19 @@ export const BIBLE_WORDS = {
             { word: "idumea", hint: "Land of Edom, south of Judea", reference: "Mark 3:8" },
             { word: "jordan", hint: "River of Israel's crossing and Jesus' baptism", reference: "Matthew 3:13" },
             { word: "shiloh", hint: "Religious center of Israel during the Judges", reference: "1 Samuel 3:3" },
-            { word: "tarsus", hint: "City in Cilicia where Paul was born", reference: "Acts 22:3" }
+            { word: "tarsus", hint: "City in Cilicia where Paul was born", reference: "Acts 22:3" },
+            { word: "bochim", hint: "Weeping place named for Israel's repentance", reference: "Judges 2:5" },
+            { word: "engedi", hint: "Desert oasis where David hid from Saul (KJV)", reference: "1 Samuel 23:29" },
+            { word: "gilgal", hint: "First camp after crossing the Jordan", reference: "Joshua 4:19" },
+            { word: "gibeah", hint: "Hill town that was King Saul's home base", reference: "1 Samuel 10:26" },
+            { word: "hermon", hint: "Northern peak whose dew pictures unity", reference: "Psalm 133:3" },
+            { word: "kadesh", hint: "Wilderness stop where water flowed from the rock", reference: "Numbers 20:11" },
+            { word: "keilah", hint: "City David rescued from Philistine raiders", reference: "1 Samuel 23:5" },
+            { word: "moriah", hint: "Region where Abraham offered Isaac", reference: "Genesis 22:2" },
+            { word: "olivet", hint: "Mount of the ascension outside Jerusalem (KJV)", reference: "Acts 1:12" },
+            { word: "penuel", hint: "Place Jacob named after wrestling all night", reference: "Genesis 32:31" },
+            { word: "shinar", hint: "Plain where Babel's tower rose", reference: "Genesis 11:2" },
+            { word: "ziklag", hint: "Philistine town gifted to David by Achish", reference: "1 Samuel 27:6" }
         ],
         animals: [
             { word: "badger", hint: "Animal whose skins covered the tabernacle", reference: "Exodus 26:14" },
@@ -183,7 +256,12 @@ export const BIBLE_WORDS = {
             { word: "pigeon", hint: "Bird offered by the poor instead of a lamb", reference: "Leviticus 5:7" },
             { word: "rabbit", hint: "Chews cud yet has an unsplit hoof, so unclean", reference: "Leviticus 11:6" },
             { word: "spider", hint: "Weaver of fragile webs compared to futile trust", reference: "Isaiah 59:5" },
-            { word: "weasel", hint: "Small unclean rodent-like creature in Leviticus", reference: "Leviticus 11:29" }
+            { word: "weasel", hint: "Small unclean rodent-like creature in Leviticus", reference: "Leviticus 11:29" },
+            { word: "heifer", hint: "Three-year-old one Abraham divided at dusk", reference: "Genesis 15:9" },
+            { word: "ospray", hint: "Sea eagle among the unclean birds (KJV)", reference: "Leviticus 11:13" },
+            { word: "pygarg", hint: "Antelope-like animal in Deuteronomy's diet list (KJV)", reference: "Deuteronomy 14:5" },
+            { word: "turtle", hint: "Turtledove whose voice signals spring (KJV)", reference: "Song of Solomon 2:12" },
+            { word: "wolves", hint: "Sheep-clothed disguises Jesus warned about", reference: "Matthew 7:15" }
         ],
         things: [
             { word: "basket", hint: "Container holding leftovers of feeding miracles", reference: "Matthew 14:20" },
@@ -202,7 +280,17 @@ export const BIBLE_WORDS = {
             { word: "tablet", hint: "Stone slabs carrying the Ten Commandments", reference: "Exodus 31:18" },
             { word: "temple", hint: "Solomon began building it in his fourth year", reference: "1 Kings 6:1" },
             { word: "throne", hint: "Seat of royal authority, famed ivory one of Solomon", reference: "1 Kings 10:18" },
-            { word: "vessel", hint: "Container believers should keep honorable", reference: "2 Timothy 2:21" }
+            { word: "vessel", hint: "Container believers should keep honorable", reference: "2 Timothy 2:21" },
+            { word: "armour", hint: "Whole set of God against spiritual darkness (KJV)", reference: "Ephesians 6:11" },
+            { word: "basons", hint: "Bowls for sprinkling covenant blood (KJV)", reference: "Exodus 24:6" },
+            { word: "candle", hint: "Lit and set on a stand, per the Sermon (KJV)", reference: "Matthew 5:15" },
+            { word: "censer", hint: "Fire pan of Korah's doomed rebellion", reference: "Numbers 16:18" },
+            { word: "grapes", hint: "Cluster carried on a pole from Eshcol", reference: "Numbers 13:23" },
+            { word: "jewels", hint: "What God makes up when He returns (KJV)", reference: "Malachi 3:17" },
+            { word: "leaven", hint: "Hidden in three measures; malice purged out", reference: "Matthew 13:33" },
+            { word: "napkin", hint: "Cloth bound on Lazarus' face (KJV)", reference: "John 11:44" },
+            { word: "ouches", hint: "Gold settings holding the priest's gemstones (KJV)", reference: "Exodus 28:11" },
+            { word: "sickle", hint: "Thrust it in, the harvest is ripe", reference: "Mark 4:29" }
         ],
         events: [
             { word: "battle", hint: "Armed conflict; David said its outcome belongs to the LORD", reference: "1 Samuel 17:47" },
@@ -213,7 +301,10 @@ export const BIBLE_WORDS = {
             { word: "plague", hint: "Ten judgments sent upon Egypt", reference: "Exodus 12:29" },
             { word: "return", hint: "Remnant's homecoming decreed by Cyrus", reference: "Ezra 1:3" },
             { word: "revolt", hint: "Rebellion against authority, as Absalom's conspiracy", reference: "2 Samuel 15:6" },
-            { word: "winter", hint: "Season Paul asked Timothy to arrive before", reference: "2 Timothy 4:21" }
+            { word: "winter", hint: "Season Paul asked Timothy to arrive before", reference: "2 Timothy 4:21" },
+            { word: "denial", hint: "Peter's threefold 'I know him not'", reference: "Matthew 26:70" },
+            { word: "supper", hint: "Cup instituted after this final meal", reference: "Luke 22:20" },
+            { word: "taxing", hint: "Enrollment that brought Mary to Bethlehem (KJV)", reference: "Luke 2:2" }
         ],
         concepts: [
             { word: "church", hint: "Body of Christ, assembly of believers", reference: "Matthew 16:18" },
@@ -226,7 +317,15 @@ export const BIBLE_WORDS = {
             { word: "savior", hint: "Jesus, the one who saves", reference: "Luke 2:11" },
             { word: "spirit", hint: "Holy ___ promised to guide believers into truth", reference: "John 14:26" },
             { word: "virtue", hint: "Whatever things are of this, think on these (Philippians)", reference: "Philippians 4:8" },
-            { word: "wisdom", hint: "What Solomon asked for instead of riches", reference: "1 Kings 3:9" }
+            { word: "wisdom", hint: "What Solomon asked for instead of riches", reference: "1 Kings 3:9" },
+            { word: "angels", hint: "Ministering spirits sent to serve the saved", reference: "Hebrews 1:14" },
+            { word: "bishop", hint: "Overseer office described to Timothy", reference: "1 Timothy 3:1" },
+            { word: "chosen", hint: "Many are called, few are this", reference: "Matthew 22:14" },
+            { word: "elders", hint: "Twenty-four throned ones around heaven's throne", reference: "Revelation 4:4" },
+            { word: "heaven", hint: "Where your treasure should reside", reference: "Matthew 6:20" },
+            { word: "pardon", hint: "What Moses pleaded God would grant Israel", reference: "Numbers 14:19" },
+            { word: "ransom", hint: "The Son of Man gave His life as one", reference: "Mark 10:45" },
+            { word: "saints", hint: "Ones the Lord will bring with Him at His coming", reference: "Jude 1:14" }
         ]
     },
 
@@ -252,7 +351,16 @@ export const BIBLE_WORDS = {
             { word: "solomon", hint: "Son of David famed for wisdom, built the temple", reference: "1 Kings 3:12" },
             { word: "stephen", hint: "First Christian martyr, stoned while forgiving", reference: "Acts 7:60" },
             { word: "timothy", hint: "Young pastor, recipient of two epistles", reference: "1 Timothy 1:2" },
-            { word: "zebedee", hint: "Father of James and John, two disciples", reference: "Matthew 4:21" }
+            { word: "zebedee", hint: "Father of James and John, two disciples", reference: "Matthew 4:21" },
+            { word: "apollos", hint: "Eloquent Alexandrian preacher taught further by Aquila", reference: "Acts 18:26" },
+            { word: "barjona", hint: "Simon Peter's patronymic, son of Jonah (KJV)", reference: "Matthew 16:17" },
+            { word: "erastus", hint: "Corinth's city treasurer who sent greetings", reference: "Romans 16:23" },
+            { word: "othniel", hint: "First judge of Israel, Caleb's kinsman", reference: "Judges 3:9" },
+            { word: "pharaoh", hint: "Ruler whose army drowned in the Red Sea", reference: "Exodus 14:28" },
+            { word: "shamgar", hint: "Judge who felled six hundred men with an ox goad", reference: "Judges 3:31" },
+            { word: "sopater", hint: "Berean traveling companion of Paul", reference: "Acts 20:4" },
+            { word: "susanna", hint: "Woman healed who ministered from her substance", reference: "Luke 8:3" },
+            { word: "tertius", hint: "Scribe who penned Romans and greeted readers", reference: "Romans 16:22" }
         ],
         places: [
             { word: "antioch", hint: "City where believers were first called Christians", reference: "Acts 11:26" },
@@ -267,7 +375,11 @@ export const BIBLE_WORDS = {
             { word: "nineveh", hint: "Assyrian city where Jonah preached", reference: "Jonah 3:3" },
             { word: "samaria", hint: "Omri's capital; Jesus spoke there to a woman at a well", reference: "1 Kings 16:24" },
             { word: "shechem", hint: "Where Abram built his first altar in Canaan", reference: "Genesis 12:7" },
-            { word: "shushan", hint: "Palace city of Esther and Nehemiah (KJV name)", reference: "Nehemiah 1:1" }
+            { word: "shushan", hint: "Palace city of Esther and Nehemiah (KJV name)", reference: "Nehemiah 1:1" },
+            { word: "bahurim", hint: "Village where Shimei cursed fleeing David", reference: "2 Samuel 16:5" },
+            { word: "chaldea", hint: "Land of Abraham's origin, land of astrologers (KJV)", reference: "Genesis 11:28" },
+            { word: "enrogel", hint: "Fountain where Adonijah threw his coronation feast", reference: "1 Kings 1:9" },
+            { word: "gerizim", hint: "Mount where the blessings were shouted", reference: "Deuteronomy 11:29" }
         ],
         animals: [
             { word: "chamois", hint: "Mountain goat in Deuteronomy's list of clean animals", reference: "Deuteronomy 14:5" },
@@ -279,7 +391,12 @@ export const BIBLE_WORDS = {
             { word: "serpent", hint: "Tempted Eve in the Garden of Eden", reference: "Genesis 3:1" },
             { word: "sparrow", hint: "Cheap bird God still watches over, per Matthew", reference: "Matthew 10:29" },
             { word: "swallow", hint: "Nesting bird found a home at God's altars", reference: "Psalm 84:3" },
-            { word: "vulture", hint: "Carrion bird gathering where the fall is", reference: "Leviticus 11:14" }
+            { word: "vulture", hint: "Carrion bird gathering where the fall is", reference: "Leviticus 11:14" },
+            { word: "bullock", hint: "Young bull of the burnt offering (KJV)", reference: "Leviticus 1:5" },
+            { word: "lapwing", hint: "Hoopoe-like bird on the unclean list (KJV)", reference: "Leviticus 11:19" },
+            { word: "pelican", hint: "Bird of wilderness solitude in a lament psalm", reference: "Psalm 102:6" },
+            { word: "roebuck", hint: "Swift deer among Solomon's provision table (KJV)", reference: "1 Kings 4:23" },
+            { word: "unicorn", hint: "Wild ox of KJV translation fame", reference: "Numbers 23:22" }
         ],
         things: [
             { word: "chariot", hint: "Horse-drawn vehicle; Elijah rode a fiery one", reference: "2 Kings 2:11" },
@@ -293,7 +410,11 @@ export const BIBLE_WORDS = {
             { word: "sceptre", hint: "Royal rod extended to Queen Esther (KJV spelling)", reference: "Esther 4:11" },
             { word: "scourge", hint: "Whip Jesus made of cords to cleanse the temple", reference: "John 2:15" },
             { word: "timbrel", hint: "Tambourine Miriam danced with at the Red Sea", reference: "Exodus 15:20" },
-            { word: "trumpet", hint: "Ram's horn blown before Jericho's fall", reference: "Joshua 6:5" }
+            { word: "trumpet", hint: "Ram's horn blown before Jericho's fall", reference: "Joshua 6:5" },
+            { word: "earring", hint: "Golden ring given Rebekah at the well (KJV)", reference: "Genesis 24:47" },
+            { word: "fetters", hint: "Iron bindings of captive kings (KJV)", reference: "Psalm 149:8" },
+            { word: "measure", hint: "With what one ye mete, ye shall receive", reference: "Mark 4:24" },
+            { word: "talents", hint: "Sums entrusted to servants in Jesus' parable", reference: "Matthew 25:15" }
         ],
         events: [
             { word: "baptism", hint: "Water rite Jesus received from John", reference: "Matthew 3:16" },
@@ -305,7 +426,14 @@ export const BIBLE_WORDS = {
             { word: "sabbath", hint: "Day of rest on the seventh day", reference: "Exodus 20:8" },
             { word: "victory", hint: "Triumph through Christ over sin and the grave", reference: "1 Corinthians 15:57" },
             { word: "warfare", hint: "Conflict; Paul urged Timothy to war a good one", reference: "1 Timothy 1:18" },
-            { word: "wedding", hint: "Marriage feast, as at Cana of Galilee", reference: "John 2:1" }
+            { word: "wedding", hint: "Marriage feast, as at Cana of Galilee", reference: "John 2:1" },
+            { word: "drought", hint: "Withheld rain in Solomon's temple prayer (KJV)", reference: "2 Chronicles 6:26" },
+            { word: "fasting", hint: "Seeking God without food, as Esther commanded", reference: "Esther 4:16" },
+            { word: "reaping", hint: "Ruth gleaned through barley and wheat seasons", reference: "Ruth 2:23" },
+            { word: "singing", hint: "Prison doors flew open while Paul and Silas did this", reference: "Acts 16:25" },
+            { word: "tempest", hint: "Great one arising on Galilee while Jesus slept", reference: "Matthew 8:24" },
+            { word: "triumph", hint: "God always causes us to do this in Christ (KJV)", reference: "2 Corinthians 2:14" },
+            { word: "weeping", hint: "It endures for a night; joy comes in the morning", reference: "Psalm 30:5" }
         ],
         concepts: [
             { word: "comfort", hint: "Consolation God gives; He is its Father", reference: "2 Corinthians 1:3" },
@@ -319,7 +447,15 @@ export const BIBLE_WORDS = {
             { word: "promise", hint: "Mercy sworn to Abraham remembered by God", reference: "Luke 1:73" },
             { word: "respect", hint: "God shows none of persons, so judge fairly", reference: "Romans 2:11" },
             { word: "steward", hint: "Faithful manager of another's goods", reference: "Luke 12:42" },
-            { word: "worship", hint: "Adoration of God in spirit and truth", reference: "John 4:24" }
+            { word: "worship", hint: "Adoration of God in spirit and truth", reference: "John 4:24" },
+            { word: "blessed", hint: "Are the poor in spirit, said Jesus", reference: "Matthew 5:3" },
+            { word: "believe", hint: "Lord, help thou mine unbelief cry answered", reference: "Mark 9:24" },
+            { word: "calling", hint: "Holy one on us before the world began (KJV)", reference: "2 Timothy 1:9" },
+            { word: "deacons", hint: "Must be grave, not double-tongued, per Paul", reference: "1 Timothy 3:8" },
+            { word: "parable", hint: "Earthly story with a heavenly meaning", reference: "Matthew 13:3" },
+            { word: "pastors", hint: "Shepherds after God's own heart promised (KJV)", reference: "Jeremiah 3:15" },
+            { word: "servant", hint: "Greatest among you shall be your one", reference: "Matthew 23:11" },
+            { word: "visions", hint: "Young men shall see them, Joel foretold", reference: "Joel 2:28" }
         ]
     }
 };
