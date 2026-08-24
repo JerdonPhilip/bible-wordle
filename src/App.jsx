@@ -182,7 +182,7 @@ function App() {
         {(gameOver || gameWon) && dismissedEnd && (
           <button
             type="button"
-            onClick={() => setEndModalOpen(true)}
+            onClick={() => { setDismissedEnd(false); setEndModalOpen(true); }}
             className="absolute bottom-2 left-1/2 -translate-x-1/2 chip shadow-lg"
           >
             <BookOpen size={13} strokeWidth={2.25} aria-hidden="true" />
